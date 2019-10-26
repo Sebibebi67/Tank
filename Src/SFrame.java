@@ -1,4 +1,6 @@
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import java.awt.*;
 
 public class SFrame extends JFrame{
@@ -7,7 +9,7 @@ public class SFrame extends JFrame{
      *
      */
     private static final long serialVersionUID = 1L;
-    // Panel panel;
+    SPanel panel;
 	Dimension size = new Dimension(1200, 830);
 	boolean isDecorated = true;
 
@@ -20,10 +22,20 @@ public class SFrame extends JFrame{
 	    this.setLocationRelativeTo(null);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	    // panel = new Panel(size, isDecorated);
+        panel = new SPanel();
+        
+        this.setContentPane(panel);
 
-	    // this.setContentPane(panel);
         this.setVisible(true);
-        System.out.println("ok");
-	}
+    }
+    
+    public SPanel getPanel(){return panel;}
+
+    public void update(){
+        panel.removeAll();
+        panel.antilag();
+        panel.display();
+        this.validate();
+
+    }
 }
