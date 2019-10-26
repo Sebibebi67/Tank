@@ -1,7 +1,7 @@
 public class Player{
 
     private int x, y;
-    private int move;
+    private double move;
     private double alphaMove;
 
     public Player(int x, int y){
@@ -16,6 +16,10 @@ public class Player{
     public int getX(){return this.x;}
     public int getY(){return this.y;}
     public double getAlphaMove(){return this.alphaMove;}
+
+    public void shot(){
+        Shot shot = new Shot();
+    }
 
     public void move(Boolean[] keys){
         if (keys[0]){

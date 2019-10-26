@@ -3,10 +3,12 @@
 // import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 
-import javax.swing.JPanel;
+
 
 public class Game{
 
@@ -17,7 +19,9 @@ public class Game{
     private Boolean[] activKey = {false, false, false, false};
     private int tankSize = 30;
     private int delay = 50;
-    private Graphics g = null;
+    private Graphics g1 = null;
+    private Graphics g2 = null;
+    private Graphics g3 = null;
 
     public Game(){
         this.initFrame();
@@ -31,7 +35,9 @@ public class Game{
         frame = new SFrame();
         frame.addKeyListener(new TAdapter());
         panel = frame.getPanel();
-        g = panel.getGraphics();
+        g1 = panel.getGraphics();
+        g2 = panel.getGraphics();
+        g3 = panel.getGraphics();
     }
 
     public void initPlayer(){
@@ -49,8 +55,17 @@ public class Game{
 
     public void display(){
         frame.update();
-        g.setColor(Color.BLUE);
-        g.fillRect(player.getX()-tankSize/2, player.getY() - tankSize/2, tankSize, tankSize);
+        g1.setColor(Color.BLACK);
+        g1.fillRect(0, 0, 1300, 850);
+
+        g2.setColor(Color.BLUE);
+
+        AffineTransform rotate = AffineTransform.getRotateInstance(player.getAlphaMove(), player.getX(), player.getY());
+        ((Graphics2D)g2).setTransform(rotate);
+        g2.fillRect(player.getX()-tankSize/2, player.getY() - tankSize/2, tankSize, tankSize);
+        
+        g3.setColor(Color.RED);
+        g3.fillRect(player.getX(), player.getY()-tankSize/8, tankSize, tankSize/4);
         
     }
 
@@ -59,11 +74,8 @@ public class Game{
     }
 
 	public void wait(int time){
-		try{
-			Thread.sleep(time);
-		}catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        try{Thread.sleep(time);}
+        catch (InterruptedException e) {}
 	}
     
     private class TAdapter extends KeyAdapter {
@@ -88,7 +100,11 @@ public class Game{
 
             	case KeyEvent.VK_DOWN:
             		activKey[2]=true;
-            		break;
+                    break;
+
+                case KeyEvent.VK_SPACE:
+                    player.shot();
+                    break;
             }
         }
 

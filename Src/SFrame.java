@@ -32,7 +32,7 @@ public class SFrame extends JFrame{
     public SPanel getPanel(){return panel;}
 
     public void update(){
-        panel.removeAll();
+        // panel.removeAll();
         panel.antilag();
         panel.display();
         this.validate();

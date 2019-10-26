@@ -7,11 +7,13 @@ public class SPanel extends JPanel{
     public SPanel(){
         super();
         this.setBackground(Color.BLACK);
+
     }
 
     public void display(){
-        // repaint();
-        setBackground(Color.BLACK);
+        this.antilag();
+        // this.repaint();
+        // setBackground(Color.BLACK);
         
     }
     
