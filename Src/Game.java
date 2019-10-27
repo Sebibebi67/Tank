@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+
+import org.w3c.dom.events.MouseEvent;
 
 
 
@@ -33,7 +36,8 @@ public class Game{
 
     public void initFrame(){
         frame = new SFrame();
-        frame.addKeyListener(new TAdapter());
+        frame.addKeyListener(new SKAdapter());
+        frame.addMouseListener(new SMAdapter());
         panel = frame.getPanel();
         g1 = panel.getGraphics();
         g2 = panel.getGraphics();
@@ -78,7 +82,7 @@ public class Game{
         catch (InterruptedException e) {}
 	}
     
-    private class TAdapter extends KeyAdapter {
+    private class SKAdapter extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -130,6 +134,20 @@ public class Game{
             		activKey[2]=false;
             		break;
             }
+        }
+
+    }
+
+    private class SMAdapter extends MouseAdapter{
+
+
+        @Override
+        public void mousPressed (MouseEvent e){
+                // System.out.println("ok");
+                int x = e.getScreenX();
+                int y = e.getClientY();
+                System.out.println(x);
+                System.out.println(y);
         }
     }
 }
