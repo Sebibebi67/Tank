@@ -7,9 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 
-import org.w3c.dom.events.MouseEvent;
+// import org.w3c.dom.events.MouseEvent;
 
 
 
@@ -142,12 +143,11 @@ public class Game{
 
 
         @Override
-        public void mousPressed (MouseEvent e){
-                // System.out.println("ok");
-                int x = e.getScreenX();
-                int y = e.getClientY();
-                System.out.println(x);
-                System.out.println(y);
+        public void mousePressed (MouseEvent e){
+            int button = e.getButton();
+            if (button == MouseEvent.BUTTON1){
+               player.shot();
+            }
         }
     }
 }
