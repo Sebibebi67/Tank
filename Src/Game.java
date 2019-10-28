@@ -9,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.MouseInfo;
+import java.awt.Dimension;
 
 // import org.w3c.dom.events.MouseEvent;
 
@@ -21,11 +23,10 @@ public class Game{
     private Player player;
     private Player[] players = new Player[3];
     private Boolean[] activKey = {false, false, false, false};
+    private double alphaMouse;
     private int tankSize = 30;
     private int delay = 50;
-    private Graphics g1 = null;
-    private Graphics g2 = null;
-    private Graphics g3 = null;
+
 
     public Game(){
         this.initFrame();
@@ -39,43 +40,32 @@ public class Game{
         frame = new SFrame();
         frame.addKeyListener(new SKAdapter());
         frame.addMouseListener(new SMAdapter());
+        frame.addMouseMotionListener(new SMAdapter());
         panel = frame.getPanel();
-        g1 = panel.getGraphics();
-        g2 = panel.getGraphics();
-        g3 = panel.getGraphics();
     }
 
     public void initPlayer(){
-        player = new Player(500, 500);
+        player = new Player(500, 500, panel);
     }
 
     public void start(){
         wait(delay);
         while (true){
             wait(delay);
-            this.move();
+            this.update();
             this.display();
         }
     }
 
     public void display(){
         frame.update();
-        g1.setColor(Color.BLACK);
-        g1.fillRect(0, 0, 1300, 850);
 
-        g2.setColor(Color.BLUE);
-
-        AffineTransform rotate = AffineTransform.getRotateInstance(player.getAlphaMove(), player.getX(), player.getY());
-        ((Graphics2D)g2).setTransform(rotate);
-        g2.fillRect(player.getX()-tankSize/2, player.getY() - tankSize/2, tankSize, tankSize);
-        
-        g3.setColor(Color.RED);
-        g3.fillRect(player.getX(), player.getY()-tankSize/8, tankSize, tankSize/4);
+        player.display(this.panel);
         
     }
 
-    public void move(){
-        player.move(activKey);
+    public void update(){
+        player.update(activKey);
     }
 
 	public void wait(int time){
@@ -148,6 +138,19 @@ public class Game{
             if (button == MouseEvent.BUTTON1){
                player.shot();
             }
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e){
+            // int x = MouseInfo.getPointerInfo().getLocation().x;
+            // int y = MouseInfo.getPointerInfo().getLocation().y;
+            int x = e.getX();
+            int y = e.getY();
+            
+            x = x - player.getX();
+            y = y - player.getY()-30;
+            // System.out.println(x+ " "+y);
+            player.setAlphaCanon(Math.atan2(y, x));
         }
     }
 }
