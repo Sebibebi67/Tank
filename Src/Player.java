@@ -45,15 +45,24 @@ public class Player{
         // Change this into g2d.transform
         g2d.translate(this.x, this.y);
         g2d.rotate(this.alphaMove);
-        g2d.translate(-this.x, -this.y);
 
         g2d.setColor(Color.BLUE);
-        g2d.fillRect(this.x-tankSize/2, this.y - tankSize/2, tankSize, tankSize);
+        g2d.fillRect(-tankSize/2,-tankSize/2, tankSize, tankSize);
+
+        g2d.rotate(this.alphaCanon-this.alphaMove);
+        g2d.fillRect(0,-tankSize/8, tankSize, tankSize/4);
+
         g2d.setTransform(old);
+
+
+
         /*AffineTransform rotateTank = AffineTransform.getRotateInstance(this.alphaMove, this.x, this.y);
         ((Graphics2D)g1).setTransform(rotateTank);
         System.out.println(x+"\n "+y+"\n"+alphaMove+"====================");
         g1.fillRect(this.x-tankSize/2, this.y - tankSize/2, tankSize, tankSize);
+
+
+
 
         g1.setColor(Color.RED);
         AffineTransform rotateCanon = AffineTransform.getRotateInstance(this.alphaCanon, this.x, this.y);
