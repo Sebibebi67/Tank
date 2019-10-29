@@ -10,7 +10,7 @@ public class SFrame extends JFrame{
      */
     private static final long serialVersionUID = 1L;
     SPanel panel;
-	Dimension size = new Dimension(1200, 830);
+	Dimension size = new Dimension(800, 800);
 	boolean isDecorated = true;
 
     public SFrame() {

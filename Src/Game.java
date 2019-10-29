@@ -14,8 +14,6 @@ import java.awt.Dimension;
 
 // import org.w3c.dom.events.MouseEvent;
 
-
-
 public class Game{
 
     private SFrame frame;
@@ -147,9 +145,10 @@ public class Game{
             int x = e.getX();
             int y = e.getY();
             
+            //System.out.println(x+ " "+y);
+
             x = x - player.getX();
             y = y - player.getY()-30;
-            // System.out.println(x+ " "+y);
             player.setAlphaCanon(Math.atan2(y, x));
         }
     }

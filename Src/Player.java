@@ -38,15 +38,29 @@ public class Player{
             shots.get(i).display();
         }
 
-        g2.setColor(Color.BLUE);
-        AffineTransform rotateTank = AffineTransform.getRotateInstance(this.alphaMove, this.x, this.y);
-        ((Graphics2D)g2).setTransform(rotateTank);
-        g2.fillRect(this.x-tankSize/2, this.y - tankSize/2, tankSize, tankSize);
+        g1.setColor(Color.BLUE);
+        Graphics2D g2d = (Graphics2D)g1;
+        AffineTransform old = g2d.getTransform();
 
-        g3.setColor(Color.RED);
+        // Change this into g2d.transform
+        g2d.translate(this.x, this.y);
+        g2d.rotate(this.alphaMove);
+        g2d.translate(-this.x, -this.y);
+
+        g2d.setColor(Color.BLUE);
+        g2d.fillRect(this.x-tankSize/2, this.y - tankSize/2, tankSize, tankSize);
+        g2d.setTransform(old);
+        /*AffineTransform rotateTank = AffineTransform.getRotateInstance(this.alphaMove, this.x, this.y);
+        ((Graphics2D)g1).setTransform(rotateTank);
+        System.out.println(x+"\n "+y+"\n"+alphaMove+"====================");
+        g1.fillRect(this.x-tankSize/2, this.y - tankSize/2, tankSize, tankSize);
+
+        g1.setColor(Color.RED);
         AffineTransform rotateCanon = AffineTransform.getRotateInstance(this.alphaCanon, this.x, this.y);
-        ((Graphics2D)g3).setTransform(rotateCanon);
-        g3.fillRect(this.x, this.y-tankSize/8, tankSize, tankSize/4);
+        ((Graphics2D)g1).setTransform(rotateCanon);
+        //System.out.println(x+" "+y+""+alphaCanon);
+        g1.fillRect(this.x, this.y-tankSize/8, tankSize, tankSize/4);*/
+
 
     }
 
@@ -75,14 +89,14 @@ public class Player{
             this.y = (int) (this.y + Math.sin(this.alphaMove)*this.move);
         }
         if (keys[1]){
-            this.alphaMove = this.alphaMove + Math.PI/4;
+            this.alphaMove = this.alphaMove + Math.PI/10;
         }
         if (keys[2]){
             this.x = (int) (this.x - Math.cos(this.alphaMove)*this.move);
             this.y = (int) (this.y - Math.sin(this.alphaMove)*this.move);
         }
         if (keys[3]){
-            this.alphaMove = this.alphaMove - Math.PI/4;
+            this.alphaMove = this.alphaMove - Math.PI/10;
         }
     }
 }
