@@ -14,11 +14,11 @@ public class Shot{
         this.x = x;
         this.y = y;
         this.alpha = alpha;
-        this.speed = 15;
+        this.speed = 30;
         this.panel = panel;
         g1 = panel.getGraphics();
         g2 = panel.getGraphics();
-        this.shotSize = 10;
+        this.shotSize = 3;
     }
 
     public void display(){

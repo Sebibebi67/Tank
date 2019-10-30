@@ -1,10 +1,17 @@
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import java.awt.Image;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.IOException;
+import java.awt.RenderingHints;
 
-public class Player{
+public class Player {
 
     private int x, y;
     private double move;
@@ -14,8 +21,9 @@ public class Player{
     private int tankSize = 30;
     private SPanel panel;
     private Graphics g1 = null;
-    private Graphics g2 = null;
-    private Graphics g3 = null;
+
+    private Image tank;
+    private Image canon;
 
     public Player(int x, int y, SPanel panel){
         this.x = x;
@@ -25,8 +33,15 @@ public class Player{
         this.alphaCanon = 0;
         this.panel = panel;
         g1 = panel.getGraphics();
-        g2 = panel.getGraphics();
-        g3 = panel.getGraphics();
+        
+        try {
+			tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
+			canon = ImageIO.read(new File("./ressources/tanks/canon.png"));
+		}
+		catch(IOException exc) {
+            System.out.println("Image loading error");
+			exc.printStackTrace();
+		}
     }
 
     public void display(SPanel panel){
@@ -38,7 +53,7 @@ public class Player{
             shots.get(i).display();
         }
 
-        g1.setColor(Color.BLUE);
+        //g1.setColor(Color.BLUE);
         Graphics2D g2d = (Graphics2D)g1;
         AffineTransform old = g2d.getTransform();
 
@@ -46,31 +61,21 @@ public class Player{
         g2d.translate(this.x, this.y);
         g2d.rotate(this.alphaMove);
 
-        g2d.setColor(Color.BLUE);
-        g2d.fillRect(-tankSize/2,-tankSize/2, tankSize, tankSize);
+        //g2d.setColor(Color.BLUE);
+        //g2d.fillRect(-tankSize/2,-tankSize/2, tankSize, tankSize);
+        //g2d.drawImage(tank,-tankSize/2,-tankSize/2, tankSize, tankSize);
+        g2d.drawImage(tank,-tankSize/2,-tankSize/2, tankSize, tankSize, null, null);
 
+        //g2d.setColor(Color.RED);
         g2d.rotate(this.alphaCanon-this.alphaMove);
-        g2d.fillRect(0,-tankSize/8, tankSize, tankSize/4);
+        //g2d.fillRect(0,-tankSize/8, tankSize, tankSize/4);
+        g2d.drawImage(canon,-tankSize/2,-tankSize/2, tankSize, tankSize, null, null);
 
         g2d.setTransform(old);
-
-
-
-        /*AffineTransform rotateTank = AffineTransform.getRotateInstance(this.alphaMove, this.x, this.y);
-        ((Graphics2D)g1).setTransform(rotateTank);
-        System.out.println(x+"\n "+y+"\n"+alphaMove+"====================");
-        g1.fillRect(this.x-tankSize/2, this.y - tankSize/2, tankSize, tankSize);
-
-
-
-
-        g1.setColor(Color.RED);
-        AffineTransform rotateCanon = AffineTransform.getRotateInstance(this.alphaCanon, this.x, this.y);
-        ((Graphics2D)g1).setTransform(rotateCanon);
-        //System.out.println(x+" "+y+""+alphaCanon);
-        g1.fillRect(this.x, this.y-tankSize/8, tankSize, tankSize/4);*/
-
-
+        RenderingHints rh = new RenderingHints(
+             RenderingHints.KEY_TEXT_ANTIALIASING,
+             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2d.setRenderingHints(rh);
     }
 
     public int getX(){return this.x;}
@@ -89,7 +94,6 @@ public class Player{
         for (int i = 0; i<shots.size(); i++){
             shots.get(i).update();
         }
-
     }
 
     public void move(Boolean[] keys){
