@@ -4,7 +4,12 @@ import java.awt.*;
 
 public class SPanel extends JPanel{
 
-    public SPanel(){
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    public SPanel() {
         super();
         this.setBackground(Color.BLACK);
 
@@ -12,8 +17,6 @@ public class SPanel extends JPanel{
 
     public void display(){
         this.antilag();
-        // this.repaint();
-        // setBackground(Color.BLACK);
         
     }
     

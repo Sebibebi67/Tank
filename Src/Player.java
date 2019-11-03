@@ -20,7 +20,7 @@ public class Player {
     private ArrayList<Shot> shots = new ArrayList<Shot>();
     private int tankSize = 30;
     private SPanel panel;
-    private Graphics g1 = null;
+    private Graphics g = null;
 
     private Image tank;
     private Image canon;
@@ -32,7 +32,7 @@ public class Player {
         this.alphaMove = 0;
         this.alphaCanon = 0;
         this.panel = panel;
-        g1 = panel.getGraphics();
+        g = panel.getGraphics();
         
         try {
 			tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
@@ -46,29 +46,21 @@ public class Player {
 
     public void display(SPanel panel){
 
-        g1.setColor(Color.BLACK);
-        g1.fillRect(this.x-2*tankSize, this.y - 2*tankSize, tankSize*4, tankSize*4);
+        g.setColor(Color.BLACK);
+        g.fillRect(this.x-2*tankSize, this.y - 2*tankSize, tankSize*4, tankSize*4);
         
         for (int i = 0; i<shots.size(); i++){
             shots.get(i).display();
         }
-
-        //g1.setColor(Color.BLUE);
-        Graphics2D g2d = (Graphics2D)g1;
+        Graphics2D g2d = (Graphics2D)g;
         AffineTransform old = g2d.getTransform();
 
         // Change this into g2d.transform
         g2d.translate(this.x, this.y);
         g2d.rotate(this.alphaMove);
 
-        //g2d.setColor(Color.BLUE);
-        //g2d.fillRect(-tankSize/2,-tankSize/2, tankSize, tankSize);
-        //g2d.drawImage(tank,-tankSize/2,-tankSize/2, tankSize, tankSize);
         g2d.drawImage(tank,-tankSize/2,-tankSize/2, tankSize, tankSize, null, null);
-
-        //g2d.setColor(Color.RED);
         g2d.rotate(this.alphaCanon-this.alphaMove);
-        //g2d.fillRect(0,-tankSize/8, tankSize, tankSize/4);
         g2d.drawImage(canon,-tankSize/2,-tankSize/2, tankSize, tankSize, null, null);
 
         g2d.setTransform(old);
@@ -83,6 +75,9 @@ public class Player {
     public double getAlphaMove(){return this.alphaMove;}
 
     public void setAlphaCanon(double alpha){this.alphaCanon = alpha;}
+    public void setAlphaCanon2(int xMouse, int yMouse){
+        this.alphaCanon = Math.atan2(yMouse - this.y -30, xMouse - this.x);
+    }
 
     public void shot(){
         Shot shot = new Shot(this.x, this.y, this.alphaCanon, this.panel);

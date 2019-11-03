@@ -1,36 +1,28 @@
-
-// import java.awt.event.ActionEvent;
-// import java.awt.event.ActionListener;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.MouseInfo;
-import java.awt.Dimension;
 
-// import org.w3c.dom.events.MouseEvent;
-
-public class Game{
+public class Game implements Runnable{
 
     private SFrame frame;
     private SPanel panel;
+    private Map map;
     private Player player;
-    private Player[] players = new Player[3];
+    // private Player[] players = new Player[3];
     private Boolean[] activKey = {false, false, false, false};
-    private double alphaMouse;
-    private int tankSize = 30;
     private int delay = 50;
+
+    private int xMouse = 0, yMouse = 0;
 
 
     public Game(){
         this.initFrame();
+        this.wait(delay);
+        this.initMap();
         this.initPlayer();
 
-        this.start();
+        // this.start();
     }
 
 
@@ -40,6 +32,10 @@ public class Game{
         frame.addMouseListener(new SMAdapter());
         frame.addMouseMotionListener(new SMAdapter());
         panel = frame.getPanel();
+    }
+
+    public void initMap(){
+        this.map = new Map(this.panel);
     }
 
     public void initPlayer(){
@@ -57,19 +53,27 @@ public class Game{
 
     public void display(){
         frame.update();
-
         player.display(this.panel);
         
     }
 
     public void update(){
         player.update(activKey);
+        player.setAlphaCanon2(xMouse, yMouse);
     }
 
 	public void wait(int time){
         try{Thread.sleep(time);}
         catch (InterruptedException e) {}
-	}
+    }
+    
+    @Override
+    public void run() {
+        // while (true) {
+        //     wait(delay);
+        //     player.setAlphaCanon2(xMouse, yMouse);
+        // }
+    }
     
     private class SKAdapter extends KeyAdapter {
 
@@ -129,27 +133,19 @@ public class Game{
 
     private class SMAdapter extends MouseAdapter{
 
-
         @Override
-        public void mousePressed (MouseEvent e){
+        public void mousePressed(MouseEvent e) {
             int button = e.getButton();
-            if (button == MouseEvent.BUTTON1){
-               player.shot();
+            if (button == MouseEvent.BUTTON1) {
+                player.shot();
             }
         }
 
         @Override
-        public void mouseMoved(MouseEvent e){
-            // int x = MouseInfo.getPointerInfo().getLocation().x;
-            // int y = MouseInfo.getPointerInfo().getLocation().y;
-            int x = e.getX();
-            int y = e.getY();
-            
-            //System.out.println(x+ " "+y);
-
-            x = x - player.getX();
-            y = y - player.getY()-30;
-            player.setAlphaCanon(Math.atan2(y, x));
+        public void mouseMoved(MouseEvent e) {
+            xMouse = e.getX();
+            yMouse = e.getY();
         }
     }
+
 }

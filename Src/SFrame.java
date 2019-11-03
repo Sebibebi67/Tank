@@ -1,5 +1,4 @@
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import java.awt.*;
 
@@ -10,7 +9,7 @@ public class SFrame extends JFrame{
      */
     private static final long serialVersionUID = 1L;
     SPanel panel;
-	Dimension size = new Dimension(800, 800);
+	Dimension size = new Dimension(1600, 830);//Map de 40 par 20
 	boolean isDecorated = true;
 
     public SFrame() {
