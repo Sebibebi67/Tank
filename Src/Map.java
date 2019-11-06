@@ -47,7 +47,7 @@ public class Map{
             String line = reader.readLine();
             int lineNb = 0;
             while(line != null){
-                System.out.println(line);
+                // System.out.println(line);
                 int charNb = 0;
                 for (char c : line.toCharArray()) {
                     tab[lineNb][charNb] = c;
@@ -115,4 +115,7 @@ public class Map{
             }
         }
     }
+
+    public char[][] getTab(){return tab;}
+    public int getCellSize(){return cellSize;}
 }
