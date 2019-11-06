@@ -21,16 +21,24 @@ public class Player {
     private int tankSize = 30;
     private SPanel panel;
 
+    private Boolean[] canGo;
+    private char[][] map;
+    private int cellSize;
+
     private Image tank;
     private Image canon;
 
-    public Player(int x, int y, SPanel panel){
+    public Player(int x, int y, SPanel panel, Map map){
         this.x = x;
         this.y = y;
         this.move = 5;
         this.alphaMove = 0;
         this.alphaCanon = 0;
         this.panel = panel;
+        this.canGo = new Boolean[2];
+        this.map = map.getTab();
+        this.cellSize = map.getCellSize();
+        g = panel.getGraphics();
         
         try {
 			tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
@@ -104,5 +112,25 @@ public class Player {
         if (keys[3]){
             this.alphaMove = this.alphaMove - Math.PI/20*diff;
         }
+    }
+
+    public void checkCollision(double diff){
+        for (int i = 0 ; i<2 ; i++){this.canGo[i] = true;}
+
+        //XFront = coordonnées x à l'avant || xBack = coordonées x à l'arrière
+        int xFront = (int)((x+tankSize/2+move*diff)*Math.cos(alphaMove)/cellSize);
+        int xBack = (int)((x-tankSize/2-move*diff)*Math.cos(alphaMove)/cellSize);
+
+        //YRight || YLeft
+        int yRight = (int)((y+tankSize/2+move*diff)*Math.sin(alphaMove)/cellSize);
+        int yLeft = (int)((y-tankSize/2-move*diff)*Math.sin(alphaMove)/cellSize);
+
+        if(map[yRight][xFront] == 'W' && map[yLeft][xFront] == 'W'){
+            this.canGo[0] = false;
+        }
+        if(map[yRight][xBack] == 'W' && map[yLeft][xBack] == 'W'){
+            this.canGo[1] = false;
+        }
+        
     }
 }

@@ -42,7 +42,7 @@ public class Game implements Runnable {
     }
 
     public void initPlayer() {
-        player = new Player(500, 500, panel);
+        player = new Player(500, 500, panel, map);
     }
 
     public void start() {
