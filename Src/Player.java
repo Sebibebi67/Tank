@@ -38,7 +38,6 @@ public class Player {
         this.canGo = new Boolean[2];
         this.map = map.getTab();
         this.cellSize = map.getCellSize();
-        g = panel.getGraphics();
         
         try {
 			tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
