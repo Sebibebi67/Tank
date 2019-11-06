@@ -25,7 +25,7 @@ public class Map{
         this.initFile();
         this.readFile();
         this.display();
-        this.print();
+        //this.print();
     }
 
     public void initFile(){
@@ -103,12 +103,12 @@ public class Map{
             for (int j=0; j<sizeX/cellSize; j++){
                 switch(tab[i][j]){
                     case 'W': //Wall
-                        System.out.println(i+" "+j+" "+cellSize);
+                        //System.out.println(i+" "+j+" "+cellSize);
                         g.setColor(Color.DARK_GRAY);
                         g.fillRect(j*cellSize, i*cellSize, cellSize, cellSize);
                         break;
                     case 'D': //Durt
-                        g.setColor(Color.GREEN);
+                        g.setColor(Color.GRAY);
                         g.fillRect(j*cellSize, i*cellSize, cellSize, cellSize);
                         break;
                 }

@@ -47,7 +47,7 @@ public class Player {
     public void display(SPanel panel){
 
         g.setColor(Color.BLACK);
-        g.fillRect(this.x-2*tankSize, this.y - 2*tankSize, tankSize*4, tankSize*4);
+        //g.fillRect(this.x-2*tankSize, this.y - 2*tankSize, tankSize*4, tankSize*4);
         
         for (int i = 0; i<shots.size(); i++){
             shots.get(i).display();

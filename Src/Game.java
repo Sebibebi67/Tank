@@ -3,30 +3,28 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class Game implements Runnable{
+public class Game implements Runnable {
 
     private SFrame frame;
     private SPanel panel;
     private Map map;
     private Player player;
     // private Player[] players = new Player[3];
-    private Boolean[] activKey = {false, false, false, false};
-    private int delay = 50;
+    private Boolean[] activKey = { false, false, false, false };
+    private float fpsTarget = 60;
 
     private int xMouse = 0, yMouse = 0;
 
-
-    public Game(){
+    public Game() {
         this.initFrame();
-        this.wait(delay);
+        this.wait(100);
         this.initMap();
         this.initPlayer();
 
         // this.start();
     }
 
-
-    public void initFrame(){
+    public void initFrame() {
         frame = new SFrame();
         frame.addKeyListener(new SKAdapter());
         frame.addMouseListener(new SMAdapter());
@@ -34,27 +32,34 @@ public class Game implements Runnable{
         panel = frame.getPanel();
     }
 
-    public void initMap(){
+    public void initMap() {
         this.map = new Map(this.panel);
     }
 
-    public void initPlayer(){
+    public void initPlayer() {
         player = new Player(500, 500, panel);
     }
 
-    public void start(){
-        wait(delay);
-        while (true){
-            wait(delay);
+    public void start() {
+        wait(100);
+        while (true) {
+            float previous = System.currentTimeMillis();
             this.update();
             this.display();
+            //System.out.println((System.nanoTime() - previous));
+
+            //this.manageFps();
+            //System.out.println(1/((float)fpsTarget)*1000-(System.currentTimeMillis() - previous));
+            //wait(1/(fpsTarget*Math.pow(10,6)));
+            wait((int)(1/((float)fpsTarget)*1000-(System.currentTimeMillis() - previous)));
+            //wait((int)(1/(fpsTarget)*1000));
         }
     }
 
     public void display(){
         frame.update();
+        map.display();
         player.display(this.panel);
-        
     }
 
     public void update(){

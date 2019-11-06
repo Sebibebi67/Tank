@@ -20,7 +20,7 @@ public class Shot{
     public void display(){
 
         g.setColor(Color.BLACK);
-        g.fillRect(x-2*(shotSize+speed), y-2*(shotSize+speed), 4*(shotSize+speed), 4*(shotSize+speed));
+        //g.fillRect(x-2*(shotSize+speed), y-2*(shotSize+speed), 4*(shotSize+speed), 4*(shotSize+speed));
 
 
         g.setColor(Color.WHITE);

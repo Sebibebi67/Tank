@@ -32,9 +32,8 @@ public class SFrame extends JFrame{
 
     public void update(){
         // panel.removeAll();
-        panel.antilag();
+        //panel.antilag();
         panel.display();
-        this.validate();
-
+        //this.validate();
     }
 }
