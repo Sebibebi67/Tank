@@ -10,6 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.awt.RenderingHints;
+import java.awt.Point;
 
 public class Player {
 
@@ -36,7 +37,7 @@ public class Player {
         this.alphaMove = 0;
         this.alphaCanon = 0;
         this.panel = panel;
-        this.canGo = new Boolean[2];
+        this.canGo = new Boolean[4];
         this.map = map.getTab();
         this.cellSize = map.getCellSize();
         g = panel.getGraphics();
@@ -99,39 +100,134 @@ public class Player {
     }
 
     public void move(Boolean[] keys, double diff){
-        if (keys[0]){
+        // for (int i = 0 ; i<4 ; i++){this.canGo[i] = true;}
+        // checkStraightCollision(diff);
+
+        if (keys[0] && canGoFront(diff)){
             this.x = (int) (this.x + Math.cos(this.alphaMove)*this.move*diff);
             this.y = (int) (this.y + Math.sin(this.alphaMove)*this.move*diff);
         }
-        if (keys[1]){
-            this.alphaMove = this.alphaMove + Math.PI/20*diff;
-        }
-        if (keys[2]){
+
+        if (keys[2] && canGoBack(diff)){
             this.x = (int) (this.x - Math.cos(this.alphaMove)*this.move*diff);
             this.y = (int) (this.y - Math.sin(this.alphaMove)*this.move*diff);
         }
-        if (keys[3]){
+
+        // checkRotateCollision(diff);
+
+        if (keys[1] && canGoLeft(diff)){
+            this.alphaMove = this.alphaMove + Math.PI/20*diff;
+        }
+
+        if (keys[3] && canGoRight(diff)){
             this.alphaMove = this.alphaMove - Math.PI/20*diff;
         }
     }
 
-    public void checkCollision(double diff){
-        for (int i = 0 ; i<2 ; i++){this.canGo[i] = true;}
+    /*
+    Help to understand the 4th next methods
 
-        //XFront = coordonnées x à l'avant || xBack = coordonées x à l'arrière
-        int xFront = (int)((x+tankSize/2+move*diff)*Math.cos(alphaMove)/cellSize);
-        int xBack = (int)((x-tankSize/2-move*diff)*Math.cos(alphaMove)/cellSize);
+    A       B
+    ---------
+    |       |   =>
+    |       |   =>
+    ---------
+    C       D
 
-        //YRight || YLeft
-        int yRight = (int)((y+tankSize/2+move*diff)*Math.sin(alphaMove)/cellSize);
-        int yLeft = (int)((y-tankSize/2-move*diff)*Math.sin(alphaMove)/cellSize);
 
-        if(map[yRight][xFront] == 'W' && map[yLeft][xFront] == 'W'){
-            this.canGo[0] = false;
+    */
+
+    public boolean canGoFront(double diff){
+        double norme = Math.sqrt( 1.0/2.0)*tankSize+move*diff;
+
+        Point B = new Point((int) (x+ norme*Math.cos(alphaMove)) /cellSize, (int)  (y - norme*Math.sin(alphaMove)) /cellSize );
+        Point D = new Point((int) (x+ norme*Math.cos(alphaMove)) /cellSize, (int)  (y + norme*Math.sin(alphaMove)) /cellSize );
+
+        if (map[B.y][B.x] == 'W' || map[D.y][D.x] == 'W'){
+            return false;
         }
-        if(map[yRight][xBack] == 'W' && map[yLeft][xBack] == 'W'){
-            this.canGo[1] = false;
-        }
-        
+        return true;
     }
+
+    public boolean canGoBack(double diff){
+        double norme = Math.sqrt( 1.0/2.0)*tankSize+move*diff;
+
+        Point A = new Point((int) (x- norme*Math.cos(alphaMove)) /cellSize, (int)  (y - norme*Math.sin(alphaMove)) /cellSize );
+        Point C = new Point((int) (x- norme*Math.cos(alphaMove)) /cellSize, (int)  (y + norme*Math.sin(alphaMove)) /cellSize );
+
+        if (map[A.y][A.x] == 'W' || map[C.y][C.x] == 'W'){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean canGoLeft(double diff){
+        double norme = Math.sqrt( 1.0/2.0)*tankSize;
+
+        Point B = new Point((int) (x+ norme*Math.cos(alphaMove+Math.PI/20*diff)) /cellSize, (int)  (y - norme*Math.sin(alphaMove+Math.PI/20*diff)) /cellSize );
+        Point C = new Point((int) (x- norme*Math.cos(alphaMove+Math.PI/20*diff)) /cellSize, (int)  (y + norme*Math.sin(alphaMove+Math.PI/20*diff)) /cellSize );
+
+        if (map[B.y][B.x] == 'W' || map[C.y][C.x] == 'W'){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean canGoRight(double diff){
+        double norme = Math.sqrt( 1.0/2.0)*tankSize;
+
+        Point A = new Point((int) (x- norme*Math.cos(alphaMove-Math.PI/20*diff)) /cellSize, (int)  (y - norme*Math.sin(alphaMove-Math.PI/20*diff)) /cellSize );
+        Point D = new Point((int) (x+ norme*Math.cos(alphaMove-Math.PI/20*diff)) /cellSize, (int)  (y + norme*Math.sin(alphaMove-Math.PI/20*diff)) /cellSize );
+
+        if (map[A.y][A.x] == 'W' || map[D.y][D.x] == 'W'){
+            return false;
+        }
+        return true;
+    }
+
+//     public void checkStraightCollision(double diff){
+
+//         //XFront = coordonnées x à l'avant || xBack = coordonées x à l'arrière
+//         int xFront = (int)( (x+ (tankSize/2+move*diff)*Math.cos(alphaMove)) /cellSize );
+//         int xBack = (int)( (x- (tankSize/2+move*diff)*Math.cos(alphaMove)) /cellSize );
+
+//         //YRight || YLeft
+//         int yRight = (int)( (y+ (tankSize/2+move*diff)*Math.sin(alphaMove)) /cellSize );
+//         int yLeft = (int)( (y- (tankSize/2+move*diff)*Math.sin(alphaMove)) /cellSize );
+
+//         if(map[yRight][xFront] == 'W' || map[yLeft][xFront] == 'W'){ //Front
+//             this.canGo[0] = false;
+//         }
+//         if(map[yRight][xBack] == 'W' || map[yLeft][xBack] == 'W'){ //Back
+//             this.canGo[2] = false;
+//         }
+        
+//     }
+
+//     public void checkRotateCollision(double diff){
+//         //XFront = coordonnées x à l'avant || xBack = coordonées x à l'arrière
+//         int xFront = (int)( (x+ (tankSize/2)*Math.cos(alphaMove+Math.PI/20*diff)) /cellSize );
+//         int xBack = (int)( (x- (tankSize/2)*Math.cos(alphaMove+Math.PI/20*diff)) /cellSize );
+
+//         //YRight || YLeft
+//         int yRight = (int)( (y+ (tankSize/2)*Math.sin(alphaMove+Math.PI/20*diff)) /cellSize );
+//         int yLeft = (int)( (y- (tankSize/2)*Math.sin(alphaMove+Math.PI/20*diff)) /cellSize );
+
+//         if(map[yRight][xFront] == 'W' || map[yLeft][xBack] == 'W'){ //Right
+//             this.canGo[1] = false;
+//         }
+
+//                 // //XFront = coordonnées x à l'avant || xBack = coordonées x à l'arrière
+//                 // int xFront = (int)( (x+ (tankSize/2)*Math.cos(alphaMove+Math.PI/20*diff)) /cellSize );
+//                 // int xBack = (int)( (x- (tankSize/2)*Math.cos(alphaMove+Math.PI/20*diff)) /cellSize );
+        
+//                 // //YRight || YLeft
+//                 // int yRight = (int)( (y+ (tankSize/2)*Math.sin(alphaMove+Math.PI/20*diff)) /cellSize );
+//                 // int yLeft = (int)( (y- (tankSize/2)*Math.sin(alphaMove+Math.PI/20*diff)) /cellSize );
+//         if(map[yLeft][xFront] == 'W' || map[yRight][xBack] == 'W'){ //Left
+//             this.canGo[3] = false;
+//         }
+// // not achieved -> 4 functions CanGo -> to calculate X et Y
+//     }
 }

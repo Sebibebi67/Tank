@@ -11,7 +11,7 @@ public class Game implements Runnable {
     private Player player;
     // private Player[] players = new Player[3];
     private Boolean[] activKey = { false, false, false, false };
-    private double fpsTarget = 15;
+    private double fpsTarget = 60;
 
     private int xMouse = 0, yMouse = 0;
 
