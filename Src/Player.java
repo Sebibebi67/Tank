@@ -21,7 +21,6 @@ public class Player {
     private ArrayList<Shot> shots = new ArrayList<Shot>();
     private int tankSize = 30;
     private SPanel panel;
-    private Graphics g = null;
 
     private Boolean[] canGo;
     private char[][] map;
@@ -40,7 +39,6 @@ public class Player {
         this.canGo = new Boolean[4];
         this.map = map.getTab();
         this.cellSize = map.getCellSize();
-        g = panel.getGraphics();
         
         try {
 			tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
@@ -52,13 +50,13 @@ public class Player {
 		}
     }
 
-    public void display(SPanel panel){
+    public void display(Graphics g){
 
         g.setColor(Color.BLACK);
         //g.fillRect(this.x-2*tankSize, this.y - 2*tankSize, tankSize*4, tankSize*4);
         
         for (int i = 0; i<shots.size(); i++){
-            shots.get(i).display();
+            shots.get(i).display(g);
         }
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform old = g2d.getTransform();
@@ -95,7 +93,7 @@ public class Player {
     public void update(Boolean[] keys, double diff){
         move(keys, diff);
         for (int i = 0; i<shots.size(); i++){
-            shots.get(i).update();
+            shots.get(i).update(diff);
         }
     }
 

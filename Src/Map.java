@@ -18,13 +18,10 @@ public class Map{
 
     private File file;
     private char[][] tab;
-    private Graphics g = null;
 
     public Map(SPanel panel){
-        g = panel.getGraphics();
         this.initFile();
         this.readFile();
-        this.display();
         //this.print();
     }
 
@@ -63,30 +60,6 @@ public class Map{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-		// try{
-		// 	BufferedReader reader = new BufferedReader (new FileReader(file));
-		// 	int c;
-
-		// 	for (int i=0; i<sizeY/cellSize ; i++) {
-		// 		for (int j=0; j<sizeX/cellSize ; j++){
-		// 			c=reader.read();
-		// 			char car = (char) c;
-		// 			if (c != -1 && c != '\n'){
-		// 				tab[i][j] = car;
-		// 			}else if (c =='\n'){
-        //                 j--;
-        //             }
-
-		// 		}
-				
-		// 	}
-		// 	reader.close();
-		// }catch(FileNotFoundException e){
-		// 	e.printStackTrace();
-		// }catch(IOException e){
-		// 	e.printStackTrace();
-		// }
     }
 
     public void print(){
@@ -98,7 +71,7 @@ public class Map{
         }
     }
 
-    public void display(){
+    public void display(Graphics g){
         for (int i=0; i<sizeY/cellSize ; i++) {
             for (int j=0; j<sizeX/cellSize; j++){
                 switch(tab[i][j]){

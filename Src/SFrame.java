@@ -9,10 +9,10 @@ public class SFrame extends JFrame{
      */
     private static final long serialVersionUID = 1L;
     SPanel panel;
-	Dimension size = new Dimension(1600, 830);//Map de 40 par 20
+	//Dimension size = new Dimension(1600, 830);//Map de 40 par 20
 	boolean isDecorated = true;
 
-    public SFrame() {
+    public SFrame(Dimension size) {
         this.setTitle("Tanks");
 	    //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    this.setSize( (int)size.getWidth(), (int)size.getHeight());
