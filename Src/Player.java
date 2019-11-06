@@ -28,7 +28,7 @@ public class Player {
     public Player(int x, int y, SPanel panel){
         this.x = x;
         this.y = y;
-        this.move = 10;
+        this.move = 5;
         this.alphaMove = 0;
         this.alphaCanon = 0;
         this.panel = panel;
@@ -84,27 +84,27 @@ public class Player {
         shots.add(shot);
     }
 
-    public void update(Boolean[] keys){
-        move(keys);
+    public void update(Boolean[] keys, double diff){
+        move(keys, diff);
         for (int i = 0; i<shots.size(); i++){
             shots.get(i).update();
         }
     }
 
-    public void move(Boolean[] keys){
+    public void move(Boolean[] keys, double diff){
         if (keys[0]){
-            this.x = (int) (this.x + Math.cos(this.alphaMove)*this.move);
-            this.y = (int) (this.y + Math.sin(this.alphaMove)*this.move);
+            this.x = (int) (this.x + Math.cos(this.alphaMove)*this.move*diff);
+            this.y = (int) (this.y + Math.sin(this.alphaMove)*this.move*diff);
         }
         if (keys[1]){
-            this.alphaMove = this.alphaMove + Math.PI/10;
+            this.alphaMove = this.alphaMove + Math.PI/20*diff;
         }
         if (keys[2]){
-            this.x = (int) (this.x - Math.cos(this.alphaMove)*this.move);
-            this.y = (int) (this.y - Math.sin(this.alphaMove)*this.move);
+            this.x = (int) (this.x - Math.cos(this.alphaMove)*this.move*diff);
+            this.y = (int) (this.y - Math.sin(this.alphaMove)*this.move*diff);
         }
         if (keys[3]){
-            this.alphaMove = this.alphaMove - Math.PI/10;
+            this.alphaMove = this.alphaMove - Math.PI/20*diff;
         }
     }
 }

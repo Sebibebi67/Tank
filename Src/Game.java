@@ -11,7 +11,7 @@ public class Game implements Runnable {
     private Player player;
     // private Player[] players = new Player[3];
     private Boolean[] activKey = { false, false, false, false };
-    private float fpsTarget = 60;
+    private double fpsTarget = 15;
 
     private int xMouse = 0, yMouse = 0;
 
@@ -42,16 +42,24 @@ public class Game implements Runnable {
 
     public void start() {
         wait(100);
+        double finalDiff = 0;
+        double previous = 0;
         while (true) {
-            float previous = System.currentTimeMillis();
-            this.update();
+            previous = System.currentTimeMillis();
+            this.update(finalDiff);
             this.display();
             //System.out.println((System.nanoTime() - previous));
 
             //this.manageFps();
             //System.out.println(1/((float)fpsTarget)*1000-(System.currentTimeMillis() - previous));
             //wait(1/(fpsTarget*Math.pow(10,6)));
-            wait((int)(1/((float)fpsTarget)*1000-(System.currentTimeMillis() - previous)));
+            double diff = (System.currentTimeMillis() - previous);
+            if (diff < 1/(fpsTarget)*1000) {
+                wait((int)(1/((double)fpsTarget)*1000-diff));
+                //System.out.println((int)(1/(fpsTarget)*1000-diff));
+            }
+            finalDiff = (System.currentTimeMillis()-previous)/(double)16;
+            //System.out.println(finalDiff);
             //wait((int)(1/(fpsTarget)*1000));
         }
     }
@@ -62,8 +70,8 @@ public class Game implements Runnable {
         player.display(this.panel);
     }
 
-    public void update(){
-        player.update(activKey);
+    public void update(double diff){
+        player.update(activKey, diff);
         player.setAlphaCanon2(xMouse, yMouse);
     }
 
