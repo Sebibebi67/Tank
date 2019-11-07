@@ -2,14 +2,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.*;
-
-import static java.lang.System.out;
 
 public class Map{
 
@@ -95,9 +92,9 @@ public class Map{
     public char[][] getTab(){return tab;}
     public int getCellSize(){return cellSize;}
 
-    public Boolean wallCollision(Rectangle r){
+    public Boolean wallCollision(Shape s){
         for (int i = 0 ; i<walls.size(); i++){
-            if (r.intersects(walls.get(i))){
+            if (s.intersects(walls.get(i))){
                 return true;
             }
         }
