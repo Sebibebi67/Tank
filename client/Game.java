@@ -1,5 +1,7 @@
 package client;
 
+import entities.*;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.KeyEvent;
@@ -52,11 +54,11 @@ public class Game implements Runnable {
     }
 
     public void initMap() {
-        this.map = new Map(this.panel);
+        this.map = new Map();
     }
 
     public void initPlayer() {
-        player = new Player(500, 500, panel, map);
+        player = new Player(500, 500, map);
     }
 
     // public void start() {

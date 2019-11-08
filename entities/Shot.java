@@ -1,8 +1,10 @@
-package client;
+package entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+
 public class Shot{
     
     private double x,y;
@@ -11,7 +13,7 @@ public class Shot{
     private double shotSize;
     private Rectangle rect;
 
-    public Shot(double x, double y, double alpha, SPanel panel){
+    public Shot(double x, double y, double alpha){
         this.x = x;
         this.y = y;
         this.alpha = alpha;

@@ -1,4 +1,4 @@
-package client;
+package entities;
 
 import java.util.ArrayList;
 
@@ -23,19 +23,17 @@ public class Player {
     private double alphaCanon;
     private ArrayList<Shot> shots = new ArrayList<Shot>();
     private double tankSize = 30;
-    private SPanel panel;
     private Map map;
 
     private Image tank;
     private Image canon;
 
-    public Player(double x, double y, SPanel panel, Map map){
+    public Player(double x, double y, Map map){
         this.x = x;
         this.y = y;
         this.move = 2;
         this.alphaMove = 0;
         this.alphaCanon = 0;
-        this.panel = panel;
         this.map = map;
         
         
@@ -84,7 +82,7 @@ public class Player {
     }
 
     public void shot(){
-        Shot shot = new Shot(this.x, this.y, this.alphaCanon, this.panel);
+        Shot shot = new Shot(this.x, this.y, this.alphaCanon);
         shots.add(shot);
     }
 
