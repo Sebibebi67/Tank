@@ -119,7 +119,7 @@ public class Game implements Runnable {
 
     public void update(double diff) throws IOException{
         
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        // ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         
         player.update(activKey, diff);
         player.setAlphaCanon2(xMouse, yMouse);

@@ -12,7 +12,7 @@ public class Server {
 
     private int port = 25577;
 
-    private int idHandler = 0; // id
+    private Integer idHandler = 0; // id
     
     public Server(int port){
         this.port = port;
@@ -26,20 +26,23 @@ public class Server {
 
             // Infinite loop waiting for new client
             while (true) {
+
+                // i : id of handler
+                
+
                 System.out.println("Waiting for a client");
 
                 Socket socket = serverSocket.accept();
+                idHandler++;
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.write(idHandler);
+                os.writeObject(idHandler);
                 os.close();
 
                 System.out.println("New client");
 
                 // Start an handler thread to communicate with the new client
                 new Thread(() -> serveSocket(socket, idHandler)).start();
-
-                // i : id of handler
-                idHandler++;
+                
             }
 
         } catch (SocketException e) {

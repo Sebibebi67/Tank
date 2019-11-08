@@ -14,7 +14,16 @@ public class Main {
         try {
             socket = new Socket(url, port);
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            int id = (int) in.readObject();
+            Boolean finished = false;
+
+            int id = -1;
+            while(!finished){
+                Object o = in.readObject();
+                if (o instanceof Integer){
+                    finished = true;
+                    id = (int) o;
+                }
+            }
 
             System.out.println("id : "+id);
 
