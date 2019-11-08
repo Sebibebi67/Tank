@@ -32,7 +32,7 @@ public class Player {
     public Player(int x, int y, SPanel panel, Map map){
         this.x = x;
         this.y = y;
-        this.move = 5;
+        this.move = 2;
         this.alphaMove = 0;
         this.alphaCanon = 0;
         this.panel = panel;

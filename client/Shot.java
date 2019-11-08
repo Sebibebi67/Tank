@@ -16,7 +16,7 @@ public class Shot{
         this.y = y;
         this.alpha = alpha;
         this.speed = 15;
-        this.shotSize = 3;
+        this.shotSize = 7;
         this.circle = newCircle();
     }
 

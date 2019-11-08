@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.*;
+import java.awt.geom.Area;
 
 public class Map{
 
@@ -19,6 +20,7 @@ public class Map{
     private File file;
     private char[][] tab;
     private ArrayList<Rectangle> walls;
+    private Area wallsArea;
 
     public Map(SPanel panel){
         this.initFile();
