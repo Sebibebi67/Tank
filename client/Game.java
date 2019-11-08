@@ -1,3 +1,5 @@
+package client;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.KeyEvent;

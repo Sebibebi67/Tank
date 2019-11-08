@@ -1,3 +1,5 @@
+package client;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Ellipse2D;
