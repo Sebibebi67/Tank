@@ -26,7 +26,10 @@ public class Game implements Runnable {
         this.wait(100);
         this.initMap();
         this.initPlayer();
-        // this.start();
+        // this.startGame();
+
+        new Thread(this).start();
+        this.display();
     }
 
     public void initFrame() {
@@ -52,9 +55,10 @@ public class Game implements Runnable {
         double finalDiff = 0;
         double previous = 0;
         while (true) {
-            previous = System.currentTimeMillis();
+            previous = System.currentTimeMillis();           
+            
+            //REFRESH
             this.update(finalDiff);
-            this.display();
 
             double diff = (System.currentTimeMillis() - previous);
             if (diff < 1/(fpsTarget)*1000) {
@@ -65,15 +69,29 @@ public class Game implements Runnable {
     }
 
     public void display(){
-        frame.update();
+        double finalDiff = 0;
+        double previous = 0;
 
-        Image image = new BufferedImage((int)size.getWidth(), (int)size.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
+        while(true){
+            previous = System.currentTimeMillis();
+            this.update(finalDiff);
 
-        map.display(g);
-        player.display(g);
+            frame.update();
 
-        finalG.drawImage(image,0,0,(int)size.getWidth(), (int)size.getHeight(), null, null);
+            Image image = new BufferedImage((int)size.getWidth(), (int)size.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics g = image.getGraphics();
+
+            map.display(g);
+            player.display(g);
+
+            finalG.drawImage(image,0,0,(int)size.getWidth(), (int)size.getHeight(), null, null);
+
+            double diff = (System.currentTimeMillis() - previous);
+            if (diff < 1/(fpsTarget)*1000) {
+                wait((int)(1/((double)fpsTarget)*1000-diff));
+            }
+            finalDiff = (System.currentTimeMillis()-previous)/(double)16;
+        }
     }
 
     public void update(double diff){
