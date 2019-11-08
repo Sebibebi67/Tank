@@ -3,6 +3,7 @@ package server;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -11,7 +12,7 @@ public class Server {
 
     private int port = 25577;
 
-    private int idHandler; // id
+    private int idHandler = 0; // id
     
     public Server(int port){
         this.port = port;
@@ -20,7 +21,6 @@ public class Server {
     }
     
     public void serve() {
-
         try {
             ServerSocket serverSocket = new ServerSocket(this.port);
 
@@ -29,12 +29,17 @@ public class Server {
                 System.out.println("Waiting for a client");
 
                 Socket socket = serverSocket.accept();
-                // i : id of handler
-                idHandler++;
+                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                os.write(idHandler);
+                os.close();
+
                 System.out.println("New client");
 
                 // Start an handler thread to communicate with the new client
                 new Thread(() -> serveSocket(socket, idHandler)).start();
+
+                // i : id of handler
+                idHandler++;
             }
 
         } catch (SocketException e) {
@@ -46,12 +51,13 @@ public class Server {
 
     public void serveSocket(Socket threadSocket, int i) {
         boolean finished = false;
+        System.out.println("Id : "+i);
 
         try {
             ObjectInputStream is = new ObjectInputStream(threadSocket.getInputStream());
-            // System.out.println(i);
 
-            // while not getting an "end" message by the client : gather numbers and sum them
+            //o = is.readObject();
+
             while (!finished) {
                 /*o = is.readObject();
                 if (o instanceof Integer) {
