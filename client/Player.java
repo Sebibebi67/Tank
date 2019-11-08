@@ -17,22 +17,22 @@ import java.awt.Rectangle;
 
 public class Player {
 
-    private int x, y;
+    private double x, y;
     private double move;
     private double alphaMove;
     private double alphaCanon;
     private ArrayList<Shot> shots = new ArrayList<Shot>();
-    private int tankSize = 30;
+    private double tankSize = 30;
     private SPanel panel;
     private Map map;
 
     private Image tank;
     private Image canon;
 
-    public Player(int x, int y, SPanel panel, Map map){
+    public Player(double x, double y, SPanel panel, Map map){
         this.x = x;
         this.y = y;
-        this.move = 5;
+        this.move = 2;
         this.alphaMove = 0;
         this.alphaCanon = 0;
         this.panel = panel;
@@ -63,9 +63,9 @@ public class Player {
         g2d.translate(this.x, this.y);
         g2d.rotate(this.alphaMove);
 
-        g2d.drawImage(tank,-tankSize/2,-tankSize/2, tankSize, tankSize, null, null);
+        g2d.drawImage(tank,(int)-tankSize/2,(int)-tankSize/2, (int)tankSize, (int)tankSize, null, null);
         g2d.rotate(this.alphaCanon-this.alphaMove);
-        g2d.drawImage(canon,-tankSize/2,-tankSize/2, tankSize, tankSize, null, null);
+        g2d.drawImage(canon,(int)-tankSize/2,(int)-tankSize/2, (int)tankSize, (int)tankSize, null, null);
 
         g2d.setTransform(old);
         RenderingHints rh = new RenderingHints(
@@ -74,8 +74,8 @@ public class Player {
         g2d.setRenderingHints(rh);
     }
 
-    public int getX(){return this.x;}
-    public int getY(){return this.y;}
+    public double getX(){return this.x;}
+    public double getY(){return this.y;}
     public double getAlphaMove(){return this.alphaMove;}
 
     public void setAlphaCanon(double alpha){this.alphaCanon = alpha;}
@@ -103,13 +103,13 @@ public class Player {
     public void move(Boolean[] keys, double diff){
 
         if (keys[0] && canGoFront(diff)){
-            this.x = (int) (this.x + Math.cos(this.alphaMove)*this.move*diff);
-            this.y = (int) (this.y + Math.sin(this.alphaMove)*this.move*diff);
+            this.x = this.x + Math.cos(this.alphaMove)*this.move*diff;
+            this.y = this.y + Math.sin(this.alphaMove)*this.move*diff;
         }
 
         if (keys[2] && canGoBack(diff)){
-            this.x = (int) (this.x - Math.cos(this.alphaMove)*this.move*diff);
-            this.y = (int) (this.y - Math.sin(this.alphaMove)*this.move*diff);
+            this.x =this.x - Math.cos(this.alphaMove)*this.move*diff;
+            this.y =this.y - Math.sin(this.alphaMove)*this.move*diff;
         }
 
         if (keys[1] && canGoLeft(diff)){
@@ -124,14 +124,14 @@ public class Player {
     public boolean canGoFront(double diff){
         Rectangle rectPlayer = new Rectangle   ((int) (this.x + Math.cos(this.alphaMove)*this.move*diff - tankSize/2),
                                                 (int) (this.y + Math.sin(this.alphaMove)*this.move*diff - tankSize/2),
-                                                tankSize, tankSize);
+                                                (int)tankSize, (int)tankSize);
         return !map.wallCollision(rectPlayer);
     }
 
     public boolean canGoBack(double diff){
         Rectangle rectPlayer = new Rectangle   ((int) (this.x - Math.cos(this.alphaMove)*this.move*diff - tankSize/2),
                                                 (int) (this.y - Math.sin(this.alphaMove)*this.move*diff - tankSize/2),
-                                                tankSize, tankSize);
+                                                (int)tankSize, (int)tankSize);
         return !map.wallCollision(rectPlayer);
     }
 

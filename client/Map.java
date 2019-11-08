@@ -6,9 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Random;
 import java.awt.*;
+import java.awt.geom.Area;
 
 public class Map{
 
@@ -18,7 +18,7 @@ public class Map{
 
     private File file;
     private char[][] tab;
-    private ArrayList<Rectangle> walls;
+    private Area wallsArea;
 
     public Map(SPanel panel){
         this.initFile();
@@ -94,21 +94,26 @@ public class Map{
     public char[][] getTab(){return tab;}
     public int getCellSize(){return cellSize;}
 
-    public Boolean wallCollision(Shape s){
-        for (int i = 0 ; i<walls.size(); i++){
-            if (s.intersects(walls.get(i))){
-                return true;
-            }
+    public Boolean wallCollision(Rectangle r){
+        // for (int i = 0 ; i<walls.size(); i++){
+        //     if (s.intersects(walls.get(i))){
+        //         return true;
+        //     }
+        // }
+        // return false;
+        if ( wallsArea.intersects(r)){
+            return true;
         }
         return false;
     }
 
     public void makeWalls(){
-        walls = new ArrayList<Rectangle>();
+        wallsArea = new Area();
         for (int i=0; i<sizeY/cellSize ; i++) {
             for (int j=0; j<sizeX/cellSize; j++){
                 if (tab[i][j] == 'W'){
-                    walls.add(new Rectangle(j*cellSize, i*cellSize, cellSize, cellSize));
+                    Rectangle rect = new Rectangle(j*cellSize, i*cellSize, cellSize, cellSize);
+                    wallsArea.add(new Area(rect));
                 }
             }
         }
