@@ -50,7 +50,38 @@ public class Game implements Runnable {
         player = new Player(500, 500, panel, map);
     }
 
-    public void start() {
+    // public void start() {
+
+    // }
+
+    public void display(){
+        // double finalDiff = 0;
+        double previous = 0;
+
+        while(true){
+            previous = System.currentTimeMillis();
+            // this.update(finalDiff);
+
+            frame.update();
+            
+            Image image = new BufferedImage((int)size.getWidth(), (int)size.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics g = image.getGraphics();
+            
+            map.display(g);
+            player.display(g);
+            
+            finalG.drawImage(image,0,0,(int)size.getWidth(), (int)size.getHeight(), null, null);
+            
+            double diff = (System.currentTimeMillis() - previous);
+            if (diff < 1/(fpsTarget)*1000) {
+                wait((int)(1/((double)fpsTarget)*1000-diff));
+            }
+            // finalDiff = (System.currentTimeMillis()-previous)/(double)16;
+        }
+    }
+    
+    @Override
+    public void run() {
         wait(100);
         double finalDiff = 0;
         double previous = 0;
@@ -67,33 +98,6 @@ public class Game implements Runnable {
             finalDiff = (System.currentTimeMillis()-previous)/(double)16;
         }
     }
-
-    public void display(){
-        double finalDiff = 0;
-        double previous = 0;
-
-        while(true){
-            previous = System.currentTimeMillis();
-            this.update(finalDiff);
-
-            frame.update();
-
-            Image image = new BufferedImage((int)size.getWidth(), (int)size.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics g = image.getGraphics();
-
-            map.display(g);
-            player.display(g);
-
-            finalG.drawImage(image,0,0,(int)size.getWidth(), (int)size.getHeight(), null, null);
-
-            double diff = (System.currentTimeMillis() - previous);
-            if (diff < 1/(fpsTarget)*1000) {
-                wait((int)(1/((double)fpsTarget)*1000-diff));
-            }
-            finalDiff = (System.currentTimeMillis()-previous)/(double)16;
-        }
-    }
-
     public void update(double diff){
         player.update(activKey, diff);
         player.setAlphaCanon2(xMouse, yMouse);
@@ -104,13 +108,6 @@ public class Game implements Runnable {
         catch (InterruptedException e) {}
     }
     
-    @Override
-    public void run() {
-        // while (true) {
-        //     wait(delay);
-        //     player.setAlphaCanon2(xMouse, yMouse);
-        // }
-    }
     
     private class SKAdapter extends KeyAdapter {
 
