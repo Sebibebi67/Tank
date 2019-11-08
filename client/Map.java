@@ -30,7 +30,6 @@ public class Map{
     public void initFile(){
         Random r = new Random();
         int nb = r.nextInt(nbMapMax) + 1;
-        // System.out.println(nb);
         file =  new File("./ressources/map/map"+nb);
     }
 
@@ -46,7 +45,6 @@ public class Map{
             String line = reader.readLine();
             int lineNb = 0;
             while(line != null){
-                // System.out.println(line);
                 int charNb = 0;
                 for (char c : line.toCharArray()) {
                     tab[lineNb][charNb] = c;
@@ -78,7 +76,6 @@ public class Map{
             for (int j=0; j<sizeX/cellSize; j++){
                 switch(tab[i][j]){
                     case 'W': //Wall
-                        //System.out.println(i+" "+j+" "+cellSize);
                         g.setColor(Color.DARK_GRAY);
                         g.fillRect(j*cellSize, i*cellSize, cellSize, cellSize);
                         break;
@@ -91,16 +88,9 @@ public class Map{
         }
     }
 
-    public char[][] getTab(){return tab;}
     public int getCellSize(){return cellSize;}
 
     public Boolean wallCollision(Rectangle r){
-        // for (int i = 0 ; i<walls.size(); i++){
-        //     if (s.intersects(walls.get(i))){
-        //         return true;
-        //     }
-        // }
-        // return false;
         if ( wallsArea.intersects(r)){
             return true;
         }
@@ -112,8 +102,7 @@ public class Map{
         for (int i=0; i<sizeY/cellSize ; i++) {
             for (int j=0; j<sizeX/cellSize; j++){
                 if (tab[i][j] == 'W'){
-                    Rectangle rect = new Rectangle(j*cellSize, i*cellSize, cellSize, cellSize);
-                    wallsArea.add(new Area(rect));
+                    wallsArea.add(new Area(new Rectangle(j*cellSize, i*cellSize, cellSize, cellSize)));
                 }
             }
         }
