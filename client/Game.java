@@ -6,6 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.awt.image.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class Game implements Runnable {
 
@@ -14,14 +17,20 @@ public class Game implements Runnable {
     private Map map;
     private Player player;
     // private Player[] players = new Player[3];
-    Dimension size = new Dimension(1600, 830);//Map de 40 par 20
+    Dimension size = new Dimension(1600, 830);// Map de 40 par 20
     Graphics finalG = null;
     private Boolean[] activKey = { false, false, false, false };
     private double fpsTarget = 60;
 
+    private Socket socket = null;
+    private int id;
+
     private int xMouse = 0, yMouse = 0;
 
-    public Game() {
+    public Game(Socket socket, int id) {
+        this.socket = socket;
+        this.id = id;
+
         this.initFrame();
         this.wait(100);
         this.initMap();
@@ -37,7 +46,7 @@ public class Game implements Runnable {
         frame.addKeyListener(new SKAdapter());
         frame.addMouseListener(new SMAdapter());
         frame.addMouseMotionListener(new SMAdapter());
-        
+
         panel = frame.getPanel();
         finalG = panel.getGraphics();
     }
@@ -54,51 +63,64 @@ public class Game implements Runnable {
 
     // }
 
-    public void display(){
+    public void display() {
         // double finalDiff = 0;
         double previous = 0;
 
-        while(true){
+        while (true) {
             previous = System.currentTimeMillis();
             // this.update(finalDiff);
 
             frame.update();
-            
-            Image image = new BufferedImage((int)size.getWidth(), (int)size.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+            Image image = new BufferedImage((int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics g = image.getGraphics();
-            
+
             map.display(g);
             player.display(g);
-            
-            finalG.drawImage(image,0,0,(int)size.getWidth(), (int)size.getHeight(), null, null);
-            
+
+            finalG.drawImage(image, 0, 0, (int) size.getWidth(), (int) size.getHeight(), null, null);
+
             double diff = (System.currentTimeMillis() - previous);
-            if (diff < 1/(fpsTarget)*1000) {
-                wait((int)(1/((double)fpsTarget)*1000-diff));
+            if (diff < 1 / (fpsTarget) * 1000) {
+                wait((int) (1 / ((double) fpsTarget) * 1000 - diff));
             }
             // finalDiff = (System.currentTimeMillis()-previous)/(double)16;
         }
     }
-    
+
     @Override
     public void run() {
         wait(100);
-        double finalDiff = 0;
-        double previous = 0;
-        while (true) {
-            previous = System.currentTimeMillis();           
+        
+        try {
             
-            //REFRESH
-            this.update(finalDiff);
-
-            double diff = (System.currentTimeMillis() - previous);
-            if (diff < 1/(fpsTarget)*1000) {
-                wait((int)(1/((double)fpsTarget)*1000-diff));
+            
+            
+            
+            double finalDiff = 0;
+            double previous = 0;
+            while (true) {
+                previous = System.currentTimeMillis();           
+                
+                //REFRESH
+                this.update(finalDiff);
+                
+                double diff = (System.currentTimeMillis() - previous);
+                if (diff < 1/(fpsTarget)*1000) {
+                    wait((int)(1/((double)fpsTarget)*1000-diff));
+                }
+                finalDiff = (System.currentTimeMillis()-previous)/(double)16;
             }
-            finalDiff = (System.currentTimeMillis()-previous)/(double)16;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-    public void update(double diff){
+
+    public void update(double diff) throws IOException{
+        
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        
         player.update(activKey, diff);
         player.setAlphaCanon2(xMouse, yMouse);
     }
