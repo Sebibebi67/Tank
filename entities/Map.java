@@ -1,4 +1,6 @@
-package client;
+package entities;
+
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +22,7 @@ public class Map{
     private char[][] tab;
     private Area wallsArea;
 
-    public Map(SPanel panel){
+    public Map(){
         this.initFile();
         this.readFile();
         //this.print();
