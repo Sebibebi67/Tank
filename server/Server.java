@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+import message.InitMessage;
+
 public class Server {
 
     private int port = 25577;
@@ -33,10 +35,6 @@ public class Server {
                 // i : id of handler
                 idHandler++;
 
-                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(idHandler);
-                os.close();
-
                 System.out.println("New client");
 
                 // Start an handler thread to communicate with the new client
@@ -51,12 +49,21 @@ public class Server {
         }
     }
 
-    public void serveSocket(Socket threadSocket, int i) {
+    public void serveSocket(Socket threadSocket, int id) {
         boolean finished = false;
-        System.out.println("Id : "+i);
+        System.out.println("Player ID : "+id);
 
         try {
             ObjectInputStream is = new ObjectInputStream(threadSocket.getInputStream());
+            int roomID = (int) is.readObject();
+
+            System.out.println("Room ID : "+roomID);
+            Manager m = new Manager();
+            m.connect(roomID);
+
+            ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
+            os.writeObject(new InitMessage(id, null, null));
+            os.close();
 
             //o = is.readObject();
 
@@ -85,6 +92,8 @@ public class Server {
         } catch (EOFException e) {
             // nothing sent
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }/* catch (ClassNotFoundException e) {
             e.printStackTrace();

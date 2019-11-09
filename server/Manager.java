@@ -6,7 +6,7 @@ public class Manager {
 
     private ArrayList<Room> rooms = new ArrayList<>();
 
-    private boolean isOpened(int id) {
+    private boolean isOpen(int id) {
         for (Room room : rooms) {
             if (room.getId() == id) {
                 return true;
@@ -24,21 +24,21 @@ public class Manager {
         return null;
     }
 
-    public void createRoom() {
+    private void createRoom() {
         Room r = new Room();
         rooms.add(r);
         //return r.getId();
     }
 
-    /*public int play() {
-
-    }*/
+    private void play(Room r) {
+        
+    }
 
     public void connect(int id) {
-        if (!isOpened(id)) {
+        if (!isOpen(id)) {
             createRoom();
         }
-        
+        this.play(getRoom(id));
         //play()
     }
 }
