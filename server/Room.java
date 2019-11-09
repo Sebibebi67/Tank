@@ -24,7 +24,7 @@ public class Room {
 
         map = new Map();
 
-        players.add(new Player(id, 500,500, map));
+        players.add(new Player(500,500, map, playerID));
     }
 
     public int getId() {
