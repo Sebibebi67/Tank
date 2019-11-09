@@ -3,6 +3,9 @@ package entities;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+
+import message.SCMessage;
+
 import java.awt.Image;
 
 import java.awt.Color;
@@ -22,14 +25,14 @@ public class Player {
     private double alphaMove;
     private double alphaCanon;
     private ArrayList<Shot> shots = new ArrayList<Shot>();
-    private double tankSize = 30;
+    private static double tankSize = 30;
     private Map map;
     private int id;
 
-    private Image tank;
-    private Image canon;
+    private static Image tank;
+    private static Image canon;
 
-    public Player(double x, double y, Map map, int id){
+    public Player(double x, double y, Map map, int id) {
         this.x = x;
         this.y = y;
         this.move = 2;
@@ -37,16 +40,43 @@ public class Player {
         this.alphaCanon = 0;
         this.map = map;
         this.id = id;
-        
-        
+
         try {
-			tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
-			canon = ImageIO.read(new File("./ressources/tanks/canon.png"));
-		}
-		catch(IOException exc) {
+            tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
+            canon = ImageIO.read(new File("./ressources/tanks/canon.png"));
+        } catch (IOException exc) {
             System.out.println("Image loading error");
-			exc.printStackTrace();
-		}
+            exc.printStackTrace();
+        }
+    }
+
+    public static void displayPlayers(Graphics g, ArrayList<SCMessage> messages) {
+        g.setColor(Color.BLACK);
+
+
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform old = g2d.getTransform();
+
+        for (int i = 0; i < messages.size(); i++) {
+
+            Shot.displayShots(g, messages.get(i).getShotsPos());
+
+            g2d.translate(messages.get(i).getXTank(), messages.get(i).getYTank());
+            g2d.rotate(messages.get(i).getAlphaMove());
+
+            g2d.drawImage(tank, (int) -tankSize / 2, (int) -tankSize / 2, (int) tankSize, (int) tankSize, null, null);
+            g2d.rotate(messages.get(i).getAlphaCanon() - messages.get(i).getAlphaMove());
+            g2d.drawImage(canon, (int) -tankSize / 2, (int) -tankSize / 2, (int) tankSize, (int) tankSize, null, null);
+
+            g2d.setTransform(old);
+            RenderingHints rh = new RenderingHints(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2d.setRenderingHints(rh);
+
+        }
+
+
     }
 
     public void display(Graphics g){
@@ -77,6 +107,7 @@ public class Player {
     public double getX(){return this.x;}
     public double getY(){return this.y;}
     public double getAlphaMove(){return this.alphaMove;}
+    public double getAlphaCanon(){return this.alphaCanon;}
 
     public void setAlphaCanon(double alpha){this.alphaCanon = alpha;}
     public void setAlphaCanon2(int xMouse, int yMouse){
