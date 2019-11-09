@@ -26,8 +26,6 @@ public class Main {
             Object o = in.readObject();
             InitMessage message =(InitMessage) o;
 
-
-
             in.close();
             out.close();
 
