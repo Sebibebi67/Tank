@@ -1,9 +1,13 @@
 package client;
 
+import message.*;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import message.InitMessage;
 
 public class Main {
 
@@ -23,20 +27,20 @@ public class Main {
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             Boolean finished = false;
 
-            int id = -1;
+            InitMessage message = null;
             while(!finished){
                 Object o = in.readObject();
-                if (o instanceof Integer){
+                if (o instanceof InitMessage){
                     finished = true;
-                    id = (int) o;
+                    message = (InitMessage) o;
                 }
             }
             in.close();
             out.close();
 
-            System.out.println("id : "+id);
+            System.out.println(message.getId());
 
-            new Game(socket, id);
+            new Game(socket, message.getId());
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
