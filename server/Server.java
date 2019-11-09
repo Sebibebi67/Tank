@@ -24,16 +24,15 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(this.port);
 
+            boolean finished = false;
             // Infinite loop waiting for new client
-            while (true) {
+            while (!finished) {
+                System.out.println("Waiting for a client");
+                Socket socket = serverSocket.accept();
 
                 // i : id of handler
-                
-
-                System.out.println("Waiting for a client");
-
-                Socket socket = serverSocket.accept();
                 idHandler++;
+
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 os.writeObject(idHandler);
                 os.close();
@@ -42,8 +41,8 @@ public class Server {
 
                 // Start an handler thread to communicate with the new client
                 new Thread(() -> serveSocket(socket, idHandler)).start();
-                
             }
+            serverSocket.close();
 
         } catch (SocketException e) {
             // To close accept, close serverSocket to go into this handler and send "end"
@@ -83,7 +82,6 @@ public class Server {
             threadSocket.close();
 
             //System.out.println("Client connection "+i+" finished");
-
         } catch (EOFException e) {
             // nothing sent
         } catch (IOException e) {
@@ -91,11 +89,9 @@ public class Server {
         }/* catch (ClassNotFoundException e) {
             e.printStackTrace();
         }*/
-        // socket.close();
     }
 
     public static void main(String[] args) {
         new Server().serve();
-        //new Thread(() -> new Server().serve()).start();
     }
 }
