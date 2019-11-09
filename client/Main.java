@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import jdk.vm.ci.common.InitTimer;
 import message.InitMessage;
 
 public class Main {
