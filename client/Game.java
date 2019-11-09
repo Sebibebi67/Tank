@@ -1,6 +1,8 @@
 package client;
 
 import entities.*;
+import message.CSMessage;
+import message.SCMessage;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
@@ -11,6 +13,7 @@ import java.awt.image.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Game implements Runnable {
 
@@ -22,21 +25,26 @@ public class Game implements Runnable {
     Dimension size = new Dimension(1600, 830);// Map de 40 par 20
     Graphics finalG = null;
     private Boolean[] activKey = { false, false, false, false };
+    private Boolean activMouse;
     private double fpsTarget = 60;
 
     private Socket socket = null;
     private int id;
+    private char[][] tab;
+    private ArrayList<SCMessage> messages;
 
     private int xMouse = 0, yMouse = 0;
 
-    public Game(Socket socket, int id, char[][] tab) {
+    public Game(Socket socket, int id, char[][] tab, ArrayList<SCMessage> messages) {
         this.socket = socket;
         this.id = id;
+        this.tab = tab;
+        this.messages = messages;
 
         this.initFrame();
         this.wait(100);
-        this.initMap(tab);
-        this.initPlayer();
+        // this.initMap(tab);
+        // this.initPlayer();
         // this.startGame();
 
         new Thread(this).start();
@@ -78,8 +86,11 @@ public class Game implements Runnable {
             Image image = new BufferedImage((int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics g = image.getGraphics();
 
-            map.display(g);
-            player.display(g);
+            // map.display(g);
+            // player.display(g);
+
+            Map.displayMap(g, tab);
+            Player.displayPlayers(g, messages);
 
             finalG.drawImage(image, 0, 0, (int) size.getWidth(), (int) size.getHeight(), null, null);
 
@@ -97,15 +108,17 @@ public class Game implements Runnable {
         
         try {
             
-            
-            
-            
             double finalDiff = 0;
             double previous = 0;
             while (true) {
-                previous = System.currentTimeMillis();           
+                previous = System.currentTimeMillis();
+
                 
+                // ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                // CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id);
+                // out.writeObject(csmessage);
                 //REFRESH
+
                 this.update(finalDiff);
                 
                 double diff = (System.currentTimeMillis() - previous);
@@ -123,8 +136,8 @@ public class Game implements Runnable {
         
         // ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         
-        player.update(activKey, diff);
-        player.setAlphaCanon2(xMouse, yMouse);
+        // player.update(activKey, diff);
+        // player.setAlphaCanon2(xMouse, yMouse);
     }
 
 	public void wait(int time){
@@ -195,7 +208,17 @@ public class Game implements Runnable {
         public void mousePressed(MouseEvent e) {
             int button = e.getButton();
             if (button == MouseEvent.BUTTON1) {
-                player.shot();
+                // player.shot();
+                activMouse = true;
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            int button = e.getButton();
+            if (button == MouseEvent.BUTTON1) {
+                // player.shot();
+                activMouse = false;
             }
         }
 

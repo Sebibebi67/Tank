@@ -31,7 +31,7 @@ public class Main {
 
             System.out.println(message.getId());
 
-            new Game(socket, message.getId(), message.getTab());
+            new Game(socket, message.getId(), message.getTab(), message.getMessages());
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
