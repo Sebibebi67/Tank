@@ -49,9 +49,9 @@ public class Server {
         }
     }
 
-    public void serveSocket(Socket threadSocket, int id) {
+    public void serveSocket(Socket threadSocket, int playerID) {
         boolean finished = false;
-        System.out.println("Player ID : "+id);
+        System.out.println("Player ID : "+playerID);
 
         try {
             ObjectInputStream is = new ObjectInputStream(threadSocket.getInputStream());
@@ -59,10 +59,10 @@ public class Server {
 
             System.out.println("Room ID : "+roomID);
             Manager m = new Manager();
-            m.connect(roomID);
+            m.connect(roomID, playerID);
 
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
-            os.writeObject(new InitMessage(id, null, null));
+            os.writeObject(new InitMessage(playerID, null, null));
             os.close();
 
             //o = is.readObject();

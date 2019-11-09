@@ -2,6 +2,9 @@ package server;
 
 import java.util.ArrayList;
 
+import message.InitMessage;
+import message.SCMessage;
+
 public class Manager {
 
     private ArrayList<Room> rooms = new ArrayList<>();
@@ -24,8 +27,8 @@ public class Manager {
         return null;
     }
 
-    private void createRoom() {
-        Room r = new Room();
+    private void createRoom(int roomID, int playerID) {
+        Room r = new Room(roomID, playerID);
         rooms.add(r);
         //return r.getId();
     }
@@ -34,11 +37,18 @@ public class Manager {
         
     }
 
-    public void connect(int id) {
-        if (!isOpen(id)) {
-            createRoom();
+    public InitMessage connect(int roomID, int playerID) {
+        if (!isOpen(roomID)) {
+            createRoom(roomID, playerID);
+            Room newRoom = getRoom(roomID);
+
+            return new InitMessage(
+                playerID, 
+                newRoom.getMap().getTab(), 
+                null
+            );
         }
-        this.play(getRoom(id));
-        //play()
+        this.play(getRoom(roomID));
+        return null;
     }
 }
