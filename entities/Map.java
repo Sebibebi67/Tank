@@ -33,6 +33,7 @@ public class Map{
         this.tab = tab;
         this.wallsArea = null;
         this.file = null;
+        this.makeWalls();
     }
 
     public void initFile(){
