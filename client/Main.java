@@ -2,6 +2,7 @@ package client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Main {
@@ -11,8 +12,14 @@ public class Main {
         int port = 25577;
         Socket socket = null;
 
+        int roomId = 7;
+
         try {
             socket = new Socket(url, port);
+
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(roomId);
+            
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             Boolean finished = false;
 
@@ -24,6 +31,8 @@ public class Main {
                     id = (int) o;
                 }
             }
+            in.close();
+            out.close();
 
             System.out.println("id : "+id);
 
