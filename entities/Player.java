@@ -24,17 +24,19 @@ public class Player {
     private ArrayList<Shot> shots = new ArrayList<Shot>();
     private double tankSize = 30;
     private Map map;
+    private int id;
 
     private Image tank;
     private Image canon;
 
-    public Player(double x, double y, Map map){
+    public Player(double x, double y, Map map, int id){
         this.x = x;
         this.y = y;
         this.move = 2;
         this.alphaMove = 0;
         this.alphaCanon = 0;
         this.map = map;
+        this.id = id;
         
         
         try {

@@ -7,8 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import message.InitMessage;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -25,22 +23,17 @@ public class Main {
             out.writeObject(roomId);
             
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Boolean finished = false;
+            Object o = in.readObject();
+            InitMessage message =(InitMessage) o;
 
-            InitMessage message = null;
-            while(!finished){
-                Object o = in.readObject();
-                if (o instanceof InitMessage){
-                    finished = true;
-                    message = (InitMessage) o;
-                }
-            }
+
+
             in.close();
             out.close();
 
             System.out.println(message.getId());
 
-            new Game(socket, message.getId());
+            new Game(socket, message.getId(), message.getTab());
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

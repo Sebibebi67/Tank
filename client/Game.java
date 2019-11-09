@@ -29,13 +29,13 @@ public class Game implements Runnable {
 
     private int xMouse = 0, yMouse = 0;
 
-    public Game(Socket socket, int id) {
+    public Game(Socket socket, int id, char[][] tab) {
         this.socket = socket;
         this.id = id;
 
         this.initFrame();
         this.wait(100);
-        this.initMap();
+        this.initMap(tab);
         this.initPlayer();
         // this.startGame();
 
@@ -53,8 +53,8 @@ public class Game implements Runnable {
         finalG = panel.getGraphics();
     }
 
-    public void initMap() {
-        this.map = new Map();
+    public void initMap(char[][]tab) {
+        this.map = new Map(tab);
     }
 
     public void initPlayer() {

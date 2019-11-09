@@ -15,7 +15,7 @@ import java.awt.geom.Area;
 public class Map{
 
     private int cellSize = 40;
-    private int nbMapMax = 1;
+    private int nbMapMax = 3;
     private int sizeX = 1600, sizeY = 800;
 
     private File file;
@@ -27,6 +27,12 @@ public class Map{
         this.readFile();
         //this.print();
         this.makeWalls();
+    }
+
+    public Map(char[][] tab){
+        this.tab = tab;
+        this.wallsArea = null;
+        this.file = null;
     }
 
     public void initFile(){

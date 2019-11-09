@@ -1,6 +1,7 @@
 package message;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class InitMessage implements Serializable{
 
@@ -13,14 +14,14 @@ public class InitMessage implements Serializable{
 
     private char[][] tab;
 
-    private SCMessage scMessage;
+    private ArrayList<SCMessage> Messages;
 
     public InitMessage(){}
 
-    public InitMessage(int id, char[][] tab, SCMessage scMessage){
+    public InitMessage(int id, char[][] tab, ArrayList<SCMessage> Messages){
         this.id = id;
         this.tab = tab;
-        this.scMessage = scMessage;
+        this.Messages = Messages;
     }
 
     public int getId() {
@@ -39,13 +40,14 @@ public class InitMessage implements Serializable{
         this.tab = tab;
     }
 
-    public SCMessage getScMessage() {
-        return this.scMessage;
+    public ArrayList<SCMessage> getMessages() {
+        return this.Messages;
     }
 
-    public void setScMessage(SCMessage scMessage) {
-        this.scMessage = scMessage;
+    public void setMessages(ArrayList<SCMessage> Messages) {
+        this.Messages = Messages;
     }
+
 
 
 }
