@@ -24,7 +24,7 @@ public class Room {
 
         map = new Map();
 
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
         players.add(new Player(500,500, map, playerID));
     } 
 
