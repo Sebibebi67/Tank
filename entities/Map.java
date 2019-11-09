@@ -14,26 +14,44 @@ import java.awt.geom.Area;
 
 public class Map{
 
-    private int cellSize = 40;
+    private static int cellSize = 40;
     private int nbMapMax = 3;
-    private int sizeX = 1600, sizeY = 800;
+    private static int sizeX = 1600;
+    private static int sizeY = 800;
 
     private File file;
     private char[][] tab;
     private Area wallsArea;
 
-    public Map(){
+    public Map() {
         this.initFile();
         this.readFile();
-        //this.print();
+        // this.print();
         this.makeWalls();
     }
 
-    public Map(char[][] tab){
+    public Map(char[][] tab) {
         this.tab = tab;
         this.wallsArea = null;
         this.file = null;
         this.makeWalls();
+    }
+
+    public static void displayMap(Graphics g, char[][] tab) {
+        for (int i = 0; i < sizeY / cellSize; i++) {
+            for (int j = 0; j < sizeX / cellSize; j++) {
+                switch (tab[i][j]) {
+                case 'W': // Wall
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                        break;
+                    case 'D': //Durt
+                        g.setColor(Color.GRAY);
+                        g.fillRect(j*cellSize, i*cellSize, cellSize, cellSize);
+                        break;
+                }
+            }
+        }
     }
 
     public void initFile(){
