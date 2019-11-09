@@ -59,10 +59,10 @@ public class Server {
 
             System.out.println("Room ID : "+roomID);
             Manager m = new Manager();
-            m.connect(roomID, playerID);
+            InitMessage initmsg = m.connect(roomID, playerID);
 
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
-            os.writeObject(new InitMessage(playerID, null, null));
+            os.writeObject(initmsg);
             os.close();
 
             //o = is.readObject();

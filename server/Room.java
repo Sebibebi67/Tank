@@ -27,6 +27,8 @@ public class Room {
         players.add(new Player(500,500, map, playerID));
     }
 
+    public 
+
     public int getId() {
 		return this.id;
     }
