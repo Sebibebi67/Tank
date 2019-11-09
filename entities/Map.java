@@ -91,6 +91,7 @@ public class Map{
     }
 
     public int getCellSize(){return cellSize;}
+    public char[][] getTab(){return tab;}
 
     public Boolean wallCollision(Rectangle r){
         if ( wallsArea.intersects(r)){
