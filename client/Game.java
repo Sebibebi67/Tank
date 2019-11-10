@@ -1,8 +1,7 @@
 package client;
 
 import entities.*;
-import message.CSMessage;
-import message.SCMessage;
+import message.*;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
