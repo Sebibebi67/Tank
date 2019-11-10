@@ -66,9 +66,7 @@ public class Server {
             System.out.println("Room ID : "+roomID);
 
             ArrayList<SCMessage> players;
-            synchronized(m){
                 players = m.connect(roomID, playerID);
-            }
 
             //System.out.println("Players : "+players.size());
 
