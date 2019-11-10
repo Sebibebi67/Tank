@@ -9,7 +9,9 @@ public class CSMessage implements Serializable{
      */
     private static final long serialVersionUID = 1L;
 
-    private Boolean[] keys;
+    private Boolean[] keys = {
+        false, false, false, false
+    };
 
     private Boolean mouseClicked;
     private int xMouse;
@@ -22,7 +24,9 @@ public class CSMessage implements Serializable{
     public CSMessage(){}
 
     public CSMessage(Boolean[] keys, Boolean mouseClicked, int xMouse, int yMouse, int id, double diff){
-        this.keys = keys;
+        for (int i=0; i<4; i++) {
+            this.keys[i] = keys[i];
+        }
         this.mouseClicked = mouseClicked;
         this.xMouse = xMouse;
         this.yMouse = yMouse;
@@ -35,7 +39,9 @@ public class CSMessage implements Serializable{
     }
 
     public void setKeys(Boolean[] keys) {
-        this.keys = keys;
+        for (int i=0; i<4; i++) {
+            this.keys[i] = keys[i];
+        }
     }
 
     public Boolean getMouseClicked() {
