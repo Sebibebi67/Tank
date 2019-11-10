@@ -36,6 +36,8 @@ public class Manager {
     public ArrayList<SCMessage> play(int roomID, int playerID, CSMessage msg) {
         Room room = getRoom(roomID);
 
+        room.update(playerID, msg);
+
         ArrayList<Player> players = room.getPlayers();
         ArrayList<Double[]> shots = new ArrayList<>();
 
