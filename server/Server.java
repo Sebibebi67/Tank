@@ -92,7 +92,9 @@ public class Server {
                 );*/
                 System.out.println(clientMessage.getDiff());
         
-                players = m.play(roomID, playerID, clientMessage);
+                synchronized(m) {
+                    players = m.play(roomID, playerID, clientMessage);
+                }
                 
                 os.writeObject(players);
                 os.flush();

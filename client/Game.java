@@ -26,7 +26,7 @@ public class Game implements Runnable {
     Graphics finalG = null;
     private volatile Boolean[] activKey = { false, false, false, false };
     private volatile Boolean activMouse = false;
-    private double fpsTarget = 120;
+    private double fpsTarget = 60;
 
 	// private Socket socket = null;
 	private ObjectInputStream in;
@@ -104,6 +104,8 @@ public class Game implements Runnable {
             if (diff < 1 / (fpsTarget) * 1000) {
                 wait((int) (1 / ((double) fpsTarget) * 1000 - diff));
             }
+
+            //System.out.println("display : "+diff);
                 // finalDiff = (System.currentTimeMillis()-previous)/(double)16;
         }
         // messages = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
@@ -121,7 +123,6 @@ public class Game implements Runnable {
             while (true) {
                 previous = System.currentTimeMillis();
 
-
                 // System.out.println(activKey[0]+" "+activKey[1]+" "+activKey[2]+" "+activKey[3]+" "+activMouse+" "+xMouse+" "+yMouse+" "+id+" "+finalDiff);
                 CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
                 out.writeObject(csmessage);
@@ -130,7 +131,6 @@ public class Game implements Runnable {
 
                 // this.update(finalDiff);
                 
-                double diff = (System.currentTimeMillis() - previous);
 
 
                 Object o = in.readObject();
@@ -151,11 +151,14 @@ public class Game implements Runnable {
                     }
                 }
 
+                double diff = (System.currentTimeMillis() - previous);
 
                 if (diff < 1/(fpsTarget)*1000) {
                     wait((int)(1/((double)fpsTarget)*1000-diff));
                 }
                 finalDiff = (System.currentTimeMillis()-previous)/(double)16;
+            
+                //System.out.println("update : "+diff);
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
