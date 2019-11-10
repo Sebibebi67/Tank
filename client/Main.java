@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         String url = "vps.tonychouteau.fr";
-        int port = 25577;
+        int port = 8087;
         Socket socket = null;
 
         int roomId = 7;
