@@ -10,7 +10,7 @@ import java.net.Socket;
 public class Main {
 
     public static void main(String[] args) {
-        String url = "127.0.0.1";
+        String url = "vps.tonychouteau.fr";
         int port = 25577;
         Socket socket = null;
 
@@ -29,7 +29,7 @@ public class Main {
             // in.close();
             // out.close();
 
-            System.out.println(message.getId());
+           //System.out.println(message.getId());
 
             new Game(in, out, message.getId(), message.getTab(), message.getMessages());
 

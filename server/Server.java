@@ -84,11 +84,11 @@ public class Server {
             //CSMessage clientMessage;
             while (!finished) {
                 CSMessage clientMessage = (CSMessage) is.readObject();
-                System.out.println("Test"+clientMessage.getKeys()[0]
+                /*System.out.println("Test"+clientMessage.getKeys()[0]
                     +clientMessage.getKeys()[1]
                     +clientMessage.getKeys()[2]
                     +clientMessage.getKeys()[3]
-                );
+                );*/
         
                 synchronized(m){
                     players = m.play(roomID, playerID, clientMessage);
