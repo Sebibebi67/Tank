@@ -80,6 +80,7 @@ public class Server {
 
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
             os.writeObject(msg);
+            os.flush(); 
 
             //CSMessage clientMessage;
             while (!finished) {
@@ -89,11 +90,13 @@ public class Server {
                     +clientMessage.getKeys()[2]
                     +clientMessage.getKeys()[3]
                 );*/
+                System.out.println(clientMessage.getDiff());
         
                 synchronized(m){
                     players = m.play(roomID, playerID, clientMessage);
                 }
                 os.writeObject(players);
+                os.flush();
             }
 
             is.close();

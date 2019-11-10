@@ -26,7 +26,7 @@ public class Game implements Runnable {
     Graphics finalG = null;
     private volatile Boolean[] activKey = { false, false, false, false };
     private volatile Boolean activMouse = false;
-    private double fpsTarget = 60;
+    private double fpsTarget = 120;
 
 	// private Socket socket = null;
 	private ObjectInputStream in;
@@ -43,7 +43,7 @@ public class Game implements Runnable {
         this.id = id;
         this.tab = tab;
         this.messages = messages;
-        
+
         //System.out.println("Players : "+messages.size());
 
         this.initFrame();
@@ -125,6 +125,7 @@ public class Game implements Runnable {
                 // System.out.println(activKey[0]+" "+activKey[1]+" "+activKey[2]+" "+activKey[3]+" "+activMouse+" "+xMouse+" "+yMouse+" "+id+" "+finalDiff);
                 CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
                 out.writeObject(csmessage);
+                out.flush(); 
                 //REFRESH
 
                 // this.update(finalDiff);

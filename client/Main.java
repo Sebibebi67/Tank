@@ -21,6 +21,7 @@ public class Main {
 
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(roomId);
+            out.flush(); 
             
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             Object o = in.readObject();
