@@ -33,9 +33,27 @@ public class Manager {
         //return r.getId();
     }
 
-    /*private void play(Room r, int id) {
-        
-    }*/
+    public ArrayList<SCMessage> play(int roomID, int playerID, CSMessage msg) {
+        Room room = getRoom(roomID);
+
+        ArrayList<Player> players = room.getPlayers();
+        ArrayList<Double[]> shots = new ArrayList<>();
+
+        ArrayList<SCMessage> messages = new ArrayList<>();
+
+        for (Player p : players) {
+            messages.add(new SCMessage(
+                p.getAlphaCanon(),
+                p.getAlphaMove(),
+                p.getX(),
+                p.getY(),
+                shots,
+                p.getId()
+            ));
+        }
+
+        return messages;
+    }
 
     public char[][] getMap(int roomID){
         return getRoom(roomID).getMap().getTab();
@@ -53,11 +71,10 @@ public class Manager {
         ArrayList<Player> players = room.getPlayers();
         ArrayList<Double[]> shots = new ArrayList<>();
 
-        ArrayList<SCMessage> message = new ArrayList<>();
-
+        ArrayList<SCMessage> messages = new ArrayList<>();
 
         for (Player p : players) {
-            message.add(new message.SCMessage(
+            messages.add(new SCMessage(
                 p.getAlphaCanon(),
                 p.getAlphaMove(),
                 p.getX(),
@@ -67,6 +84,6 @@ public class Manager {
             ));
         }
 
-        return message;
+        return messages;
     }
 }

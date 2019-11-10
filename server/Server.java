@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import message.CSMessage;
 import message.InitMessage;
 import message.SCMessage;
 
@@ -63,22 +64,33 @@ public class Server {
             int roomID = (int) is.readObject();
 
             System.out.println("Room ID : "+roomID);
-            ArrayList<SCMessage> players = m.connect(roomID, playerID);
+
+            ArrayList<SCMessage> players;
+            synchronized(m){
+                players = m.connect(roomID, playerID);
+            }
 
             //System.out.println("Players : "+players.size());
 
-            InitMessage initmsg = new InitMessage(
+            InitMessage msg = new InitMessage(
                 playerID,
                 m.getMap(roomID),
                 players
             );
 
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
-            os.writeObject(initmsg);
+            os.writeObject(msg);
 
+            CSMessage clientMessage;
             while (!finished) {
-                
+                clientMessage = (CSMessage) is.readObject();
+
+                synchronized(m){
+                    players = m.play(roomID, playerID, clientMessage);
+                }
+                os.writeObject(players);
             }
+
             is.close();
             os.close();
 

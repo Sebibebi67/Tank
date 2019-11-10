@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Room {
 
-    private final int MAX_PLAYER = 4;
+    //private final int MAX_PLAYER = 4;
 
     private final int id;
 
