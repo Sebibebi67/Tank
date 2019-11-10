@@ -25,8 +25,8 @@ public class Game implements Runnable {
     Dimension size = new Dimension(1600, 830);// Map de 40 par 20
     Graphics finalG = null;
     private volatile Boolean[] activKey = { false, false, false, false };
-    private Boolean activMouse;
-    private double fpsTarget = 60;
+    private volatile Boolean activMouse = false;
+    private double fpsTarget = 30;
 
 	// private Socket socket = null;
 	private ObjectInputStream in;
@@ -119,8 +119,9 @@ public class Game implements Runnable {
             double previous = 0;
             while (true) {
                 previous = System.currentTimeMillis();
-                
-                System.out.println("Test"+activKey[0]+activKey[1]+activKey[2]+activKey[3]);
+
+
+                // System.out.println(activKey[0]+" "+activKey[1]+" "+activKey[2]+" "+activKey[3]+" "+activMouse+" "+xMouse+" "+yMouse+" "+id+" "+finalDiff);
                 CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
                 out.writeObject(csmessage);
                 //REFRESH
@@ -180,7 +181,7 @@ public class Game implements Runnable {
 
             switch(key){
             	case KeyEvent.VK_LEFT:
-            		activKey[3]=true;
+                    activKey[3]=true;
             		break;
 
             	case KeyEvent.VK_RIGHT:
