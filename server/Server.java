@@ -56,9 +56,9 @@ public class Server {
     }
 
     public void serveSocket(Socket threadSocket, int playerID) {
-        boolean finished = false;
         System.out.println("Player ID : "+playerID);
 
+        boolean finished = false;
         try {
             ObjectInputStream is = new ObjectInputStream(threadSocket.getInputStream());
             int roomID = (int) is.readObject();
@@ -84,6 +84,12 @@ public class Server {
             //CSMessage clientMessage;
             while (!finished) {
                 CSMessage clientMessage = (CSMessage) is.readObject();
+                System.out.println("Test"+clientMessage.getKeys()[0]
+                    +clientMessage.getKeys()[1]
+                    +clientMessage.getKeys()[2]
+                    +clientMessage.getKeys()[3]
+                );
+        
                 synchronized(m){
                     players = m.play(roomID, playerID, clientMessage);
                 }
