@@ -33,7 +33,7 @@ public class Game implements Runnable {
 	private ObjectOutputStream out;
     private int id;
     private char[][] tab;
-    private ArrayList<SCMessage> messages;
+    private volatile ArrayList<SCMessage> messages;
 
     private int xMouse = 0, yMouse = 0;
 
@@ -82,54 +82,28 @@ public class Game implements Runnable {
         // double finalDiff = 0;
         double previous = 0;
 
-        try {
+        while (true) {
+            previous = System.currentTimeMillis();
+            // this.update(finalDiff);                   
 
-            while (true) {
-                previous = System.currentTimeMillis();
-                // this.update(finalDiff);            
-                
-                Object o = in.readObject();
-                if (o instanceof ArrayList<?>) {
-                    // Get the List.
-                    ArrayList<?> al = (ArrayList<?>) o;
-                    if (al.size() > 0) {
-                        messages = new ArrayList<>();
-                        for (int i = 0; i < al.size(); i++) {
-                            // Still not enough for a type.
-                            Object obj = al.get(i);
-                            if (obj instanceof SCMessage) {
-                                // Here we go!
-                                SCMessage s = (SCMessage) obj;
-                                messages.add(s);
-                            }
-                        }
-                    }
-                }
+            frame.update();
 
-        
+            Image image = new BufferedImage((int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics g = image.getGraphics();
 
-                frame.update();
+            // map.display(g);
+            // player.display(g);
 
-                Image image = new BufferedImage((int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                Graphics g = image.getGraphics();
+            Map.displayMap(g, tab);
+            Player.displayPlayers(g, messages);
 
-                // map.display(g);
-                // player.display(g);
+            finalG.drawImage(image, 0, 0, (int) size.getWidth(), (int) size.getHeight(), null, null);
 
-                Map.displayMap(g, tab);
-                Player.displayPlayers(g, messages);
-
-                finalG.drawImage(image, 0, 0, (int) size.getWidth(), (int) size.getHeight(), null, null);
-
-                double diff = (System.currentTimeMillis() - previous);
-                if (diff < 1 / (fpsTarget) * 1000) {
-                    wait((int) (1 / ((double) fpsTarget) * 1000 - diff));
-                }
-                    // finalDiff = (System.currentTimeMillis()-previous)/(double)16;
+            double diff = (System.currentTimeMillis() - previous);
+            if (diff < 1 / (fpsTarget) * 1000) {
+                wait((int) (1 / ((double) fpsTarget) * 1000 - diff));
             }
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+                // finalDiff = (System.currentTimeMillis()-previous)/(double)16;
         }
         // messages = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
 
@@ -153,12 +127,33 @@ public class Game implements Runnable {
                 // this.update(finalDiff);
                 
                 double diff = (System.currentTimeMillis() - previous);
+
+
+                Object o = in.readObject();
+                if (o instanceof ArrayList<?>) {
+                    // Get the List.
+                    ArrayList<?> al = (ArrayList<?>) o;
+                    if (al.size() > 0) {
+                        messages = new ArrayList<>();
+                        for (int i = 0; i < al.size(); i++) {
+                            // Still not enough for a type.
+                            Object obj = al.get(i);
+                            if (obj instanceof SCMessage) {
+                                // Here we go!
+                                SCMessage s = (SCMessage) obj;
+                                messages.add(s);
+                            }
+                        }
+                    }
+                }
+
+
                 if (diff < 1/(fpsTarget)*1000) {
                     wait((int)(1/((double)fpsTarget)*1000-diff));
                 }
                 finalDiff = (System.currentTimeMillis()-previous)/(double)16;
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
