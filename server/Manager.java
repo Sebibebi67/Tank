@@ -1,9 +1,9 @@
 package server;
 
-import java.util.ArrayList;
+import entities.*;
+import message.*;
 
-import message.InitMessage;
-import message.SCMessage;
+import java.util.ArrayList;
 
 public class Manager {
 
@@ -33,22 +33,40 @@ public class Manager {
         //return r.getId();
     }
 
-    private void play(Room r) {
+    /*private void play(Room r, int id) {
         
+    }*/
+
+    public char[][] getMap(int roomID){
+        return getRoom(roomID).getMap().getTab();
     }
 
-    public InitMessage connect(int roomID, int playerID) {
+    public ArrayList<SCMessage> connect(int roomID, int playerID) {
         if (!isOpen(roomID)) {
             createRoom(roomID, playerID);
-            Room newRoom = getRoom(roomID);
-
-            return new InitMessage(
-                playerID, 
-                newRoom.getMap().getTab(), 
-                null
-            );
+        } else {
+            //this.play(getRoom(roomID), playerID);
+            getRoom(roomID).addNewPlayer(playerID);
         }
-        this.play(getRoom(roomID));
-        return null;
+
+        Room room = getRoom(roomID);
+        ArrayList<Player> players = room.getPlayers();
+        ArrayList<Double[]> shots = new ArrayList<>();
+
+        ArrayList<SCMessage> message = new ArrayList<>();
+
+
+        for (Player p : players) {
+            message.add(new message.SCMessage(
+                p.getAlphaCanon(),
+                p.getAlphaMove(),
+                p.getX(),
+                p.getY(),
+                shots,
+                p.getId()
+            ));
+        }
+
+        return message;
     }
 }

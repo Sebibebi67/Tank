@@ -7,8 +7,10 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import message.InitMessage;
+import message.SCMessage;
 
 public class Server {
 
@@ -59,30 +61,22 @@ public class Server {
 
             System.out.println("Room ID : "+roomID);
             Manager m = new Manager();
-            InitMessage initmsg = m.connect(roomID, playerID);
+            ArrayList<SCMessage> players = m.connect(roomID, playerID);
+
+            InitMessage initmsg = new InitMessage(
+                playerID,
+                m.getMap(roomID),
+                players
+            );
 
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
             os.writeObject(initmsg);
-            os.close();
-
-            //o = is.readObject();
 
             while (!finished) {
-                /*o = is.readObject();
-                if (o instanceof Integer) {
-
-                    if ((int) o == -7) {
-                        finished = true;
-                        continue;
-                    }
-                    
-                    //System.out.print("");
-                    //link.setData((int) o);
-                    synchronized(link) {
-                        link.offer((int) o);
-                    }
-                }*/
+                
             }
+            is.close();
+            os.close();
 
             // Close handler and leave thread
             is.close();

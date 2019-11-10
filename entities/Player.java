@@ -108,6 +108,10 @@ public class Player {
     public double getY(){return this.y;}
     public double getAlphaMove(){return this.alphaMove;}
     public double getAlphaCanon(){return this.alphaCanon;}
+    public int getId(){return this.id;}
+    /*public getShots(){
+        Array
+    }*/
 
     public void setAlphaCanon(double alpha){this.alphaCanon = alpha;}
     public void setAlphaCanon2(int xMouse, int yMouse){

@@ -26,7 +26,11 @@ public class Room {
 
         players = new ArrayList<>();
         players.add(new Player(500,500, map, playerID));
-    } 
+    }
+
+    public void addNewPlayer(int playerID) {
+        players.add(new Player(500+50*playerID,500+50*playerID, map, playerID));
+    }
 
     public int getId() {
 		return this.id;
