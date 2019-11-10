@@ -19,8 +19,8 @@ public class Game implements Runnable {
 
     private SFrame frame;
     private SPanel panel;
-    private Map map;
-    private Player player;
+    // private Map map;
+    // private Player player;
     // private Player[] players = new Player[3];
     Dimension size = new Dimension(1600, 830);// Map de 40 par 20
     Graphics finalG = null;
@@ -43,7 +43,7 @@ public class Game implements Runnable {
         this.id = id;
         this.tab = tab;
         this.messages = messages;
-        System.out.println("Players : "+messages.size());
+        // System.out.println("Players : "+messages.size());
 
         this.initFrame();
         Player.initImage();
@@ -66,13 +66,13 @@ public class Game implements Runnable {
         finalG = panel.getGraphics();
     }
 
-    public void initMap(char[][]tab) {
-        this.map = new Map(tab);
-    }
+    // public void initMap(char[][]tab) {
+    //     this.map = new Map(tab);
+    // }
 
-    public void initPlayer() {
-        player = new Player(500, 500, map, id);
-    }
+    // public void initPlayer() {
+    //     player = new Player(500, 500, map, id);
+    // }
 
     // public void start() {
 
@@ -197,7 +197,7 @@ public class Game implements Runnable {
                     break;
 
                 case KeyEvent.VK_SPACE:
-                    player.shot();
+                    // player.shot();
                     break;
             }
         }
