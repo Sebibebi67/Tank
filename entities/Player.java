@@ -62,9 +62,9 @@ public class Player {
 
             Shot.displayShots(g, messages.get(i).getShotsPos());
 
-            System.out.println( messages.get(i).getXTank()+" "+
-                                messages.get(i).getYTank()+" "+
-                                messages.get(i).getAlphaMove());
+            // System.out.println( messages.get(i).getXTank()+" "+
+            //                     messages.get(i).getYTank()+" "+
+            //                     messages.get(i).getAlphaMove());
 
             g2d.translate(messages.get(i).getXTank(), messages.get(i).getYTank());
             g2d.rotate(messages.get(i).getAlphaMove());

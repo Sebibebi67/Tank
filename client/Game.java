@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -83,6 +84,32 @@ public class Game implements Runnable {
             previous = System.currentTimeMillis();
             // this.update(finalDiff);
 
+            ObjectInputStream in;
+            try {
+                in = new ObjectInputStream(socket.getInputStream());
+                Object o = in.readObject();
+                if (o instanceof ArrayList<?>) {
+                    // Get the List.
+                    ArrayList<?> al = (ArrayList<?>) o;
+                    if (al.size() > 0) {
+                        messages = new ArrayList<>();
+                        for (int i = 0; i < al.size(); i++) {
+                            // Still not enough for a type.
+                            Object obj = al.get(i);
+                            if (obj instanceof SCMessage) {
+                                // Here we go!
+                                SCMessage s = (SCMessage) o;
+                                messages.add(s);
+                            }
+                        }
+                    }
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            // messages = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
+            
+
             frame.update();
 
             Image image = new BufferedImage((int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -116,12 +143,12 @@ public class Game implements Runnable {
                 previous = System.currentTimeMillis();
 
                 
-                // ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                // CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id);
-                // out.writeObject(csmessage);
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
+                out.writeObject(csmessage);
                 //REFRESH
 
-                this.update(finalDiff);
+                // this.update(finalDiff);
                 
                 double diff = (System.currentTimeMillis() - previous);
                 if (diff < 1/(fpsTarget)*1000) {
