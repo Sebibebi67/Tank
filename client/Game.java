@@ -105,31 +105,33 @@ public class Game implements Runnable {
                         }
                     }
                 }
+
+        
+
+                frame.update();
+
+                Image image = new BufferedImage((int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                Graphics g = image.getGraphics();
+
+                // map.display(g);
+                // player.display(g);
+
+                Map.displayMap(g, tab);
+                Player.displayPlayers(g, messages);
+
+                finalG.drawImage(image, 0, 0, (int) size.getWidth(), (int) size.getHeight(), null, null);
+
+                double diff = (System.currentTimeMillis() - previous);
+                if (diff < 1 / (fpsTarget) * 1000) {
+                    wait((int) (1 / ((double) fpsTarget) * 1000 - diff));
+                }
+                    // finalDiff = (System.currentTimeMillis()-previous)/(double)16;
             }
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         // messages = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
-        
-
-        frame.update();
-
-        Image image = new BufferedImage((int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
-
-        // map.display(g);
-        // player.display(g);
-
-        Map.displayMap(g, tab);
-        Player.displayPlayers(g, messages);
-
-        finalG.drawImage(image, 0, 0, (int) size.getWidth(), (int) size.getHeight(), null, null);
-
-        double diff = (System.currentTimeMillis() - previous);
-        if (diff < 1 / (fpsTarget) * 1000) {
-            wait((int) (1 / ((double) fpsTarget) * 1000 - diff));
-        }
-            // finalDiff = (System.currentTimeMillis()-previous)/(double)16;
 
     }
 
@@ -162,8 +164,6 @@ public class Game implements Runnable {
     }
 
     public void update(double diff) throws IOException{
-        
-        // ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         
         // player.update(activKey, diff);
         // player.setAlphaCanon2(xMouse, yMouse);
