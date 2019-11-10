@@ -29,7 +29,7 @@ public class Main {
             // in.close();
             // out.close();
 
-            System.out.println(message.getId());
+           //System.out.println(message.getId());
 
             new Game(in, out, message.getId(), message.getTab(), message.getMessages());
 

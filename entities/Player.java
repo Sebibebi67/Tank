@@ -45,7 +45,7 @@ public class Player {
             tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
             canon = ImageIO.read(new File("./ressources/tanks/canon.png"));
         } catch (IOException exc) {
-            System.out.println("Image loading error");
+           //System.out.println("Image loading error");
             exc.printStackTrace();
         }
     }
@@ -86,7 +86,7 @@ public class Player {
             tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
             canon = ImageIO.read(new File("./ressources/tanks/canon.png"));
         } catch (IOException exc) {
-            System.out.println("Image loading error");
+           //System.out.println("Image loading error");
             exc.printStackTrace();
         }
     }

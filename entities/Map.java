@@ -94,7 +94,7 @@ public class Map{
             for (int j=0; j<sizeX/cellSize; j++){
                 System.out.print(tab[i][j]);
             }
-            System.out.println();
+           //System.out.println();
         }
     }
 
