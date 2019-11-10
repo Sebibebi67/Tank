@@ -26,12 +26,12 @@ public class Main {
             Object o = in.readObject();
             InitMessage message =(InitMessage) o;
 
-            in.close();
-            out.close();
+            // in.close();
+            // out.close();
 
             System.out.println(message.getId());
 
-            new Game(socket, message.getId(), message.getTab(), message.getMessages());
+            new Game(in, out, message.getId(), message.getTab(), message.getMessages());
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

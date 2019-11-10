@@ -12,7 +12,7 @@ import java.awt.image.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
+// import java.net.Socket;
 import java.util.ArrayList;
 
 public class Game implements Runnable {
@@ -28,15 +28,18 @@ public class Game implements Runnable {
     private Boolean activMouse;
     private double fpsTarget = 60;
 
-    private Socket socket = null;
+	// private Socket socket = null;
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
     private int id;
     private char[][] tab;
     private ArrayList<SCMessage> messages;
 
     private int xMouse = 0, yMouse = 0;
 
-    public Game(Socket socket, int id, char[][] tab, ArrayList<SCMessage> messages) {
-        this.socket = socket;
+    public Game(ObjectInputStream in, ObjectOutputStream out, int id, char[][] tab, ArrayList<SCMessage> messages) {
+		this.in = in;
+		this.out = out;
         this.id = id;
         this.tab = tab;
         this.messages = messages;
@@ -80,8 +83,6 @@ public class Game implements Runnable {
         double previous = 0;
 
         try {
-            ObjectInputStream in;
-            in = new ObjectInputStream(socket.getInputStream());
 
             while (true) {
                 previous = System.currentTimeMillis();
@@ -98,7 +99,7 @@ public class Game implements Runnable {
                             Object obj = al.get(i);
                             if (obj instanceof SCMessage) {
                                 // Here we go!
-                                SCMessage s = (SCMessage) o;
+                                SCMessage s = (SCMessage) obj;
                                 messages.add(s);
                             }
                         }
@@ -137,7 +138,6 @@ public class Game implements Runnable {
         wait(100);
         
         try {
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             
             double finalDiff = 0;
             double previous = 0;
