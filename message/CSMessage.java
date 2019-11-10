@@ -17,14 +17,17 @@ public class CSMessage implements Serializable{
 
     private int id;
 
+    private double diff;
+
     public CSMessage(){}
 
-    public CSMessage(Boolean[] keys, Boolean mouseClicked, int xMouse, int yMouse, int id){
+    public CSMessage(Boolean[] keys, Boolean mouseClicked, int xMouse, int yMouse, int id, double diff){
         this.keys = keys;
         this.mouseClicked = mouseClicked;
         this.xMouse = xMouse;
         this.yMouse = yMouse;
         this.id = id;
+        this.diff = diff;
     }
 
     public Boolean[] getKeys() {
@@ -65,5 +68,13 @@ public class CSMessage implements Serializable{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public double getDiff() {
+        return this.diff;
+    }
+
+    public void setDiff(double diff) {
+        this.diff = diff;
     }
 }

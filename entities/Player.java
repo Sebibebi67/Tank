@@ -52,14 +52,19 @@ public class Player {
 
     public static void displayPlayers(Graphics g, ArrayList<SCMessage> messages) {
         g.setColor(Color.BLACK);
-
+        // System.out.println(messages.size());
 
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform old = g2d.getTransform();
 
         for (int i = 0; i < messages.size(); i++) {
+            // System.out.println();
 
             Shot.displayShots(g, messages.get(i).getShotsPos());
+
+            System.out.println( messages.get(i).getXTank()+" "+
+                                messages.get(i).getYTank()+" "+
+                                messages.get(i).getAlphaMove());
 
             g2d.translate(messages.get(i).getXTank(), messages.get(i).getYTank());
             g2d.rotate(messages.get(i).getAlphaMove());
@@ -69,15 +74,24 @@ public class Player {
             g2d.drawImage(canon, (int) -tankSize / 2, (int) -tankSize / 2, (int) tankSize, (int) tankSize, null, null);
 
             g2d.setTransform(old);
-            RenderingHints rh = new RenderingHints(
-                RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            g2d.setRenderingHints(rh);
-
         }
-
-
+        RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2d.setRenderingHints(rh);
     }
+
+    public static void initImage(){
+        try {
+            tank = ImageIO.read(new File("./ressources/tanks/tank.png"));
+            canon = ImageIO.read(new File("./ressources/tanks/canon.png"));
+        } catch (IOException exc) {
+            System.out.println("Image loading error");
+            exc.printStackTrace();
+        }
+    }
+
+
 
     public void display(Graphics g){
 

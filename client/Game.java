@@ -43,6 +43,7 @@ public class Game implements Runnable {
         System.out.println("Players : "+messages.size());
 
         this.initFrame();
+        Player.initImage();
         this.wait(100);
         // this.initMap(tab);
         // this.initPlayer();
