@@ -40,6 +40,7 @@ public class Game implements Runnable {
         this.id = id;
         this.tab = tab;
         this.messages = messages;
+        System.out.println("Players : "+messages.size());
 
         this.initFrame();
         this.wait(100);

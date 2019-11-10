@@ -22,14 +22,14 @@ public class Room {
     public Room(int roomID, int playerID) {
         this.id = roomID;
 
-        map = new Map();
+        this.map = new Map();
 
-        players = new ArrayList<>();
-        players.add(new Player(500,500, map, playerID));
+        this.players = new ArrayList<>();
+        this.players.add(new Player(500,500, map, playerID));
     }
 
     public void addNewPlayer(int playerID) {
-        players.add(new Player(500+50*playerID,500+50*playerID, map, playerID));
+        this.players.add(new Player(500+50*playerID,500+50*playerID, map, playerID));
     }
 
     public int getId() {

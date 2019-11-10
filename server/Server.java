@@ -17,6 +17,8 @@ public class Server {
     private int port = 25577;
 
     private Integer idHandler = 0; // id
+
+    private volatile Manager m = null;
     
     public Server(int port){
         this.port = port;
@@ -25,6 +27,7 @@ public class Server {
     }
     
     public void serve() {
+        m = new Manager();
         try {
             ServerSocket serverSocket = new ServerSocket(this.port);
 
@@ -60,8 +63,9 @@ public class Server {
             int roomID = (int) is.readObject();
 
             System.out.println("Room ID : "+roomID);
-            Manager m = new Manager();
             ArrayList<SCMessage> players = m.connect(roomID, playerID);
+
+            //System.out.println("Players : "+players.size());
 
             InitMessage initmsg = new InitMessage(
                 playerID,
