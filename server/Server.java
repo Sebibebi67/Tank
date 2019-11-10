@@ -81,10 +81,9 @@ public class Server {
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
             os.writeObject(msg);
 
-            CSMessage clientMessage;
+            //CSMessage clientMessage;
             while (!finished) {
-                clientMessage = (CSMessage) is.readObject();
-
+                CSMessage clientMessage = (CSMessage) is.readObject();
                 synchronized(m){
                     players = m.play(roomID, playerID, clientMessage);
                 }
