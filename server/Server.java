@@ -15,7 +15,7 @@ import message.SCMessage;
 
 public class Server {
 
-    private int port = 25577;
+    private int port = 8087;
 
     private Integer idHandler = 0; // id
 
