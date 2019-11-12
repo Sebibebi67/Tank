@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import message.CSMessage;
 import message.InitMessage;
@@ -20,15 +22,20 @@ public class Server {
     private Integer idHandler = 0; // id
 
     private volatile Manager m = null;
-    
-    public Server(int port){
+
+    private volatile ConcurrentLinkedQueue<CSMessage> link;
+
+    public Server(int port) {
         this.port = port;
     }
-    public Server(){
+
+    public Server() {
     }
-    
+
     public void serve() {
         m = new Manager();
+        link = new ConcurrentLinkedQueue<>();
+
         try {
             ServerSocket serverSocket = new ServerSocket(this.port);
 
@@ -56,40 +63,48 @@ public class Server {
     }
 
     public void serveSocket(Socket threadSocket, int playerID) {
-        System.out.println("Player ID : "+playerID);
+        System.out.println("Player ID : " + playerID);
 
-        boolean finished = false;
         try {
             ObjectInputStream is = new ObjectInputStream(threadSocket.getInputStream());
             int roomID = (int) is.readObject();
 
-            System.out.println("Room ID : "+roomID);
+            System.out.println("Room ID : " + roomID);
 
             ArrayList<SCMessage> players;
-            synchronized(m){
+            synchronized (m) {
                 players = m.connect(roomID, playerID);
             }
 
-            //System.out.println("Players : "+players.size());
+            // System.out.println("Players : "+players.size());
 
-            InitMessage msg = new InitMessage(
-                playerID,
-                m.getMap(roomID),
-                players
-            );
+            InitMessage msg = new InitMessage(playerID, m.getMap(roomID), players);
 
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
             os.writeObject(msg);
-            os.flush(); 
+            os.flush();
 
-            //CSMessage clientMessage;
-            while (!finished) {
+            // CSMessage clientMessage;
+
+            new Thread(() -> {
+                try {
+                    inputHandler(is);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            //new Thread(() -> outputHandler(os, idHandler, roomID)).start();
+            outputHandler(os, idHandler, roomID);
+
+            /*while (!finished) {
                 CSMessage clientMessage = (CSMessage) is.readObject();
-                /*System.out.println("Test"+clientMessage.getKeys()[0]
+                System.out.println("Test"+clientMessage.getKeys()[0]
                     +clientMessage.getKeys()[1]
                     +clientMessage.getKeys()[2]
                     +clientMessage.getKeys()[3]
-                );*/
+                );
                 System.out.println(clientMessage.getDiff());
         
                 synchronized(m) {
@@ -98,7 +113,7 @@ public class Server {
                 
                 os.writeObject(players);
                 os.flush();
-            }
+            }*/
 
             is.close();
             os.close();
@@ -117,6 +132,30 @@ public class Server {
         }/* catch (ClassNotFoundException e) {
             e.printStackTrace();
         }*/
+    }
+
+    public void inputHandler(ObjectInputStream is) throws ClassNotFoundException, IOException {
+        boolean finished = false;
+        while (!finished) {
+            CSMessage clientMessage = (CSMessage) is.readObject();
+            link.offer(clientMessage);
+            System.out.println(clientMessage.getDiff());
+        }
+    }
+
+    public void outputHandler(ObjectOutputStream os, int playerID, int roomID) throws IOException {
+        boolean finished = false;
+        CSMessage msg;
+        ArrayList<SCMessage> players;
+        while (!finished) {
+            if ((msg = link.poll()) != null) {
+                synchronized(m) {
+                    players = m.play(roomID, playerID, msg);
+                }
+                os.writeObject(players);
+                os.flush();
+            }
+        }
     }
 
     public static void main(String[] args) {
