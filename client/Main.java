@@ -10,7 +10,7 @@ import java.net.Socket;
 public class Main {
 
     public static void main(String[] args) {
-        String url = "127.0.0.1";
+        String url = "vps.tonychouteau.fr";
         int port = 8087;
         Socket socket = null;
 

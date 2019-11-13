@@ -82,7 +82,9 @@ public class Server {
 
             ObjectOutputStream os = new ObjectOutputStream(threadSocket.getOutputStream());
             os.writeObject(msg);
+            os.writeObject(msg);
             os.flush();
+
 
             // CSMessage clientMessage;
 

@@ -120,20 +120,27 @@ public class Game implements Runnable {
             
             double finalDiff = 0;
             double previous = 0;
+
+            CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
+            out.writeObject(csmessage);
+
             while (true) {
                 previous = System.currentTimeMillis();
 
                 // System.out.println(activKey[0]+" "+activKey[1]+" "+activKey[2]+" "+activKey[3]+" "+activMouse+" "+xMouse+" "+yMouse+" "+id+" "+finalDiff);
-                CSMessage csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
+                csmessage = new CSMessage(activKey, activMouse, xMouse, yMouse, id, finalDiff);
                 out.writeObject(csmessage);
                 out.flush(); 
+                System.out.println("input "+(System.currentTimeMillis()-previous));
                 //REFRESH
 
                 // this.update(finalDiff);
                 
 
-
+                //double previous1 = System.currentTimeMillis();
+                //System.out.println("1 "+previous1);
                 Object o = in.readObject();
+                //System.out.println("input "+(System.currentTimeMillis()-previous1));
                 if (o instanceof ArrayList<?>) {
                     // Get the List.
                     ArrayList<?> al = (ArrayList<?>) o;
