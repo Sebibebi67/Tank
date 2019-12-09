@@ -26,7 +26,7 @@ public class Game implements Runnable {
     Graphics finalG = null;
     private volatile Boolean[] activKey = { false, false, false, false };
     private volatile Boolean activMouse = false;
-    private double fpsTarget = 60;
+    private double fpsTarget = 30;
 
 	// private Socket socket = null;
 	private ObjectInputStream in;
