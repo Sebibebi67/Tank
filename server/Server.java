@@ -113,8 +113,13 @@ public class Server {
         } catch (SocketException e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
 	println("Socket opened");
         byte[] buffer = new byte[8192];
+=======
+
+        byte[] buffer = new byte[1];
+>>>>>>> a4ba167e1173d2e016bef307de2c5d49ea0128c6
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 	println("Packet created");
         try {
@@ -125,7 +130,7 @@ public class Server {
 	println("Received");
 
         int roomID = Integer.parseInt(new String(buffer));
-        print("Le connard au " + packet.getAddress() + " veut se connecter au salon " + roomID);
+        print("Le connard au " + packet.getAddress() + " veut se connecter au salon " + roomID+"\n");
         packet.setLength(buffer.length);
 
         Map map = new Map();
