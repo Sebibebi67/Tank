@@ -38,7 +38,7 @@ public class Main {
         //On crée notre datagramme
         InetAddress adresse = null;
         try {
-            adresse = InetAddress.getByName(url);
+            adresse = InetAddress.getByName("127.0.0.1");
         } catch (UnknownHostException e) {
             System.out.println("line 34");
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class Main {
         System.out.println("send nudes"); 
 
         //Et on récupère la réponse du serveur
-        byte[] buffer2 = new byte[8000];
+        byte[] buffer2 = new byte[819];
         DatagramPacket packet2 = new DatagramPacket(buffer2, buffer2.length, adresse, port);
         try {
             client.receive(packet2);

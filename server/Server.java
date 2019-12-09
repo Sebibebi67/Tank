@@ -114,7 +114,7 @@ public class Server {
             e.printStackTrace();
         }
 
-        byte[] buffer = new byte[8192];
+        byte[] buffer = new byte[1];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
         try {
@@ -124,7 +124,7 @@ public class Server {
         }
 
         int roomID = Integer.parseInt(new String(buffer));
-        print("Le connard au " + packet.getAddress() + " veut se connecter au salon " + roomID);
+        print("Le connard au " + packet.getAddress() + " veut se connecter au salon " + roomID+"\n");
         packet.setLength(buffer.length);
 
         Map map = new Map();
