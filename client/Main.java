@@ -12,14 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // URL pageURL = null;
-        // try { 
-        // pageURL = new URL(getDocumentBase( ), "http://www.javasoft.com"); 
-        // } catch (MalformedURLException mue) {}
-
-
         String url = "vps.tonychouteau.fr";
-        int port = 8087;
+        int port = 60777;
         DatagramSocket client = null;
 
         //Init connexion
@@ -38,7 +32,7 @@ public class Main {
         //On crée notre datagramme
         InetAddress adresse = null;
         try {
-            adresse = InetAddress.getByName("127.0.0.1");
+            adresse = InetAddress.getByName(url);
         } catch (UnknownHostException e) {
             System.out.println("line 34");
             e.printStackTrace();
