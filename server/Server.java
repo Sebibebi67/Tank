@@ -113,15 +113,16 @@ public class Server {
         } catch (SocketException e) {
             e.printStackTrace();
         }
-
+	println("Socket opened");
         byte[] buffer = new byte[8192];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-
+	println("Packet created");
         try {
             server.receive(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
+	println("Received");
 
         int roomID = Integer.parseInt(new String(buffer));
         print("Le connard au " + packet.getAddress() + " veut se connecter au salon " + roomID);
